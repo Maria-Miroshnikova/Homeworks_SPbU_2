@@ -15,6 +15,7 @@ namespace Factorial
                 return n * Factorial(n - 1);
             }
         }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Please, input the number to count the factorial:");
@@ -23,13 +24,10 @@ namespace Factorial
             if (number < 0)
             {
                 Console.WriteLine("Wrong data!");
-            }
-            else
-            {
-                Console.WriteLine($"The answer is: {Factorial(number)}.");
+                return;
             }
 
-            Console.ReadLine();
+            Console.WriteLine($"The answer is: {Factorial(number)}.");
         }
     }
 }
