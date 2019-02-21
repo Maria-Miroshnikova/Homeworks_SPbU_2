@@ -124,8 +124,6 @@ namespace SortArray
                 int right1 = indexLeft - 1;
                 int left2 = indexLeft;
                 int right2 = right;
-                int length2 = length - left2;
-                int length1 = length - length2;
                 QuickSort(sortArray, left1, right1);
                 QuickSort(sortArray, left2, right2);
             }
