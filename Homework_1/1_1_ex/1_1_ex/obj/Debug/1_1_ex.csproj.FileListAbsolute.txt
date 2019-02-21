@@ -1,0 +1,7 @@
+C:\Users\Чайный Гриб\Programming\Programming C#\Лекция_1\1_1_ex\1_1_ex\bin\Debug\1_1_ex.exe.config
+C:\Users\Чайный Гриб\Programming\Programming C#\Лекция_1\1_1_ex\1_1_ex\bin\Debug\1_1_ex.exe
+C:\Users\Чайный Гриб\Programming\Programming C#\Лекция_1\1_1_ex\1_1_ex\bin\Debug\1_1_ex.pdb
+C:\Users\Чайный Гриб\Programming\Programming C#\Лекция_1\1_1_ex\1_1_ex\obj\Debug\1_1_ex.csprojAssemblyReference.cache
+C:\Users\Чайный Гриб\Programming\Programming C#\Лекция_1\1_1_ex\1_1_ex\obj\Debug\1_1_ex.csproj.CoreCompileInputs.cache
+C:\Users\Чайный Гриб\Programming\Programming C#\Лекция_1\1_1_ex\1_1_ex\obj\Debug\1_1_ex.exe
+C:\Users\Чайный Гриб\Programming\Programming C#\Лекция_1\1_1_ex\1_1_ex\obj\Debug\1_1_ex.pdb
