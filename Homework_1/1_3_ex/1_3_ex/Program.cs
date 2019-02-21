@@ -94,7 +94,7 @@ namespace SortArray
             }
         }
 
-        static void quickSort(int[] sortArray, int left, int right)
+        static void QuickSort(int[] sortArray, int left, int right)
         {
             int length = right - left + 1;
             if (length < 10)
@@ -126,8 +126,8 @@ namespace SortArray
                 int right2 = right;
                 int length2 = length - left2;
                 int length1 = length - length2;
-                quickSort(sortArray, left1, right1);
-                quickSort(sortArray, left2, right2);
+                QuickSort(sortArray, left1, right1);
+                QuickSort(sortArray, left2, right2);
             }
             else
             {
@@ -135,7 +135,7 @@ namespace SortArray
             }
         }
 
-        static void outputArray(int[] array)
+        static void OutputArray(int[] array)
         {
             foreach (int i in array)
             {
@@ -154,12 +154,12 @@ namespace SortArray
             }
 
             Console.WriteLine("The array is:");
-            outputArray(array);
+            OutputArray(array);
 
-            quickSort(array, 0, array.Length - 1);
+            QuickSort(array, 0, array.Length - 1);
 
             Console.WriteLine("\n Sorted array is:");
-            outputArray(array);
+            OutputArray(array);
 
             Console.ReadLine();
       
