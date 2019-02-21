@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpiralArrayWolk
+namespace SpiralArrayWalk
 {
     class Program
     {
@@ -9,7 +9,7 @@ namespace SpiralArrayWolk
             Console.WriteLine($"{array[i, j]} : [{i}, {j}]");
         }
 
-        static void SpiralArrayWolk(int[,] array)
+        static void SpiralArrayWalk(int[,] array)
         {
             int center = array.GetLength(0) / 2;
             int i = center;
@@ -99,7 +99,7 @@ namespace SpiralArrayWolk
             Console.WriteLine("The array is:");
             OutputArray(array);
 
-            SpiralArrayWolk(array);
+            SpiralArrayWalk(array);
 
             Console.ReadLine();
 
