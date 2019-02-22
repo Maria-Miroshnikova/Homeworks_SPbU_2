@@ -6,14 +6,15 @@ namespace FibonacciNumbers
     {
         static int FibonacciNumbers(int n)
         {
-            if ((n == 0) || (n == 1))
+            int fibonacciOne = 0;
+            int fibonacciTwo = 1;
+            for (int i = 1; i <= n; ++i)
             {
-                return 1;
+                int tmp = fibonacciOne;
+                fibonacciOne = fibonacciTwo;
+                fibonacciTwo += tmp;
             }
-            else
-            {
-                return FibonacciNumbers(n - 1) + FibonacciNumbers(n - 2);
-            }
+            return fibonacciTwo;
         }
 
         static void Main(string[] args)
@@ -25,13 +26,10 @@ namespace FibonacciNumbers
             if (number < 0)
             {
                 Console.WriteLine("Wrong data!");
-            }
-            else
-            {
-                Console.WriteLine($"The answer is: {FibonacciNumbers(number)}.");
+                return;
             }
 
-            Console.ReadLine();
+            Console.WriteLine($"The answer is: {FibonacciNumbers(number)}.");
         }
     }
 }
