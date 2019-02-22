@@ -100,9 +100,6 @@ namespace SpiralArrayWalk
             OutputArray(array);
 
             SpiralArrayWalk(array);
-
-            Console.ReadLine();
-
         }
     }
 }
