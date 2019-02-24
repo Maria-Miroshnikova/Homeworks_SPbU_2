@@ -143,9 +143,9 @@ namespace SortArray
 
         static void Main(string[] args)
         {
-            Random randomNumber = new Random();
+            var randomNumber = new Random();
             int lengthArray = randomNumber.Next(1, 100);
-            int[] array = new int[lengthArray];
+            var array = new int[lengthArray];
             for (int i = 0; i < array.Length; ++i)
             {
                 array[i] = randomNumber.Next(-10, 10);
