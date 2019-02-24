@@ -4,20 +4,20 @@ namespace SortMatrix
 {
     class Program
     {
-        static int Middle(int[ , ] sortMatrix, int firstIndex, int secondIndex, int thirdIndex, int supportLineIndex)
+        static int Middle(int[,] matrix, int index1, int index2, int index3, int constIndex)
         {
-            if ((sortMatrix[supportLineIndex, secondIndex] > sortMatrix[supportLineIndex, firstIndex]) && (sortMatrix[supportLineIndex, secondIndex] < sortMatrix[supportLineIndex, thirdIndex]))
+            if ((matrix[constIndex, index2] > matrix[constIndex, index1]) && (matrix[constIndex, index2] < matrix[constIndex, index3]))
             {
-                return secondIndex;
+                return index2;
             }
-            if ((sortMatrix[supportLineIndex, firstIndex] > sortMatrix[supportLineIndex, secondIndex]) && (sortMatrix[supportLineIndex, firstIndex] < sortMatrix[supportLineIndex, thirdIndex]))
+            if ((matrix[constIndex, index1] > matrix[constIndex, index2]) && (matrix[constIndex, index1] < matrix[constIndex, index3]))
             {
-                return firstIndex;
+                return index1;
             }
-            return thirdIndex;
+            return index3;
         }
 
-        static int MedianElement(int[ , ] sortMatrix, int left, int right, int supportLineIndex)
+        static int MedianElement(int[,] sortMatrix, int left, int right, int supportLineIndex)
         {
             int sameElementsDetect = 0;
             int sameElementsFix = 0;
@@ -66,7 +66,7 @@ namespace SortMatrix
             return Middle(sortMatrix, firstIndex, lastIndex, middleIndex, supportLineIndex);
         }
 
-        static void SwapColumns(int[ , ] matrix, int index1, int index2)
+        static void SwapColumns(int[,] matrix, int index1, int index2)
         {
             for (int i = 0; i < matrix.GetLength(0); ++i)
             {
@@ -76,7 +76,7 @@ namespace SortMatrix
             }
         }
 
-        static void InsertionSort(int[ , ] sortMatrix, int left, int rigth, int supportLineIndex)
+        static void InsertionSort(int[,] sortMatrix, int left, int rigth, int supportLineIndex)
         {
             for (int j = left + 1; j <= rigth; ++j)
             {
@@ -97,7 +97,7 @@ namespace SortMatrix
             }
         }
 
-        static void QuickSortMatrixColumn(int[ , ] sortMatrix, int left, int right, int supportLineIndex)
+        static void QuickSortMatrixColumn(int[,] sortMatrix, int left, int right, int supportLineIndex)
         {
             int length = right - left + 1;
             if (length < 10)
@@ -154,10 +154,10 @@ namespace SortMatrix
 
         static int[,] MakeRandomMatrix()
         {
-            Random randomNumber = new Random();
+            var randomNumber = new Random();
             int iLenMatrix = randomNumber.Next(1, 15);
             int jLenMatrix = randomNumber.Next(1, 15);
-            int[,] matrix = new int[iLenMatrix, jLenMatrix];
+            var matrix = new int[iLenMatrix, jLenMatrix];
 
             for (int i = 0; i < matrix.GetLength(0); ++i)
             {
@@ -171,9 +171,10 @@ namespace SortMatrix
 
         static void Main(string[] args)
         {
+            Console.WriteLine("This program will sort the columns of random matrix by their first elements.");
             Console.WriteLine("The matrix is:");
 
-            int[ , ] matrix = MakeRandomMatrix();
+            int[,] matrix = MakeRandomMatrix();
             OutputMatrix(matrix);
 
             int supportLineIndex = 0;
