@@ -4,7 +4,7 @@ namespace SpiralArrayWalk
 {
     class Program
     {
-        static void OutputArrayElement(int[ , ] array, int i, int j)
+        static void OutputArrayElement(int[,] array, int i, int j)
         {
             Console.WriteLine($"{array[i, j]} : [{i}, {j}]");
         }
@@ -51,13 +51,13 @@ namespace SpiralArrayWalk
             OutputArrayElement(array, array.GetLength(0) - 1, array.GetLength(0) - 1);
         }
 
-        static void OutputArray(int[ , ] array)
+        static void OutputArray(int[,] array)
         {
             Console.Write("\n");
 
             for (int i = 0; i < array.GetLength(0); ++i)
             {
-                for (int j = 0; j < array.GetLength(0); ++j)
+                for (int j = 0; j < array.GetLength(1); ++j)
                 {
                     Console.Write($"{array[i, j]} ");
                 }
@@ -67,13 +67,13 @@ namespace SpiralArrayWalk
             Console.Write("\n");
         }
 
-        static int[ , ] MakeRandomArray(int lengthArray)
+        static int[,] MakeRandomArray(int lengthArray)
         {
-            Random randomNumber = new Random();
-            int[ , ] array = new int[lengthArray, lengthArray];
+            var randomNumber = new Random();
+            var array = new int[lengthArray, lengthArray];
             for (int i = 0; i < array.GetLength(0); ++i)
             {
-                for (int j = 0; j < array.GetLength(0); ++j)
+                for (int j = 0; j < array.GetLength(1); ++j)
                 {
                     array[i, j] = randomNumber.Next(0, 9);
                 }
@@ -84,17 +84,16 @@ namespace SpiralArrayWalk
         static void Main(string[] args)
         {
             Console.WriteLine("This program will output the elements of random array \nin a spiral range from the center.");
-            Console.Write("Please, enter the number of elements in array (uneven only): ");
+            Console.Write("Please, enter the size of array (uneven only): ");
 
             int lengthArray = Convert.ToInt32(Console.ReadLine());
             if ((lengthArray < 1) || (lengthArray % 2 == 0))
             {
-                Console.Write("Wrong data!");
-                Console.ReadLine();
+                Console.Write("Wrong data: entered size of array must be uneven! ");
                 return;
             }
 
-            int[ , ] array = MakeRandomArray(lengthArray);
+            int[,] array = MakeRandomArray(lengthArray);
 
             Console.WriteLine("The array is:");
             OutputArray(array);
