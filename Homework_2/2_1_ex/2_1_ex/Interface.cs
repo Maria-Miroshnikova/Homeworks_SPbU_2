@@ -53,9 +53,13 @@ namespace ListNamespace
                         Console.Write("Please, enter the index of list element to add: ");
                         parameter2 = Console.ReadLine();
                         if (!Int32.TryParse(parameter2, out parameterInt2))
+                        {
                             Console.WriteLine("\nError: incorrect data!");
+                        }
                         else if (!list.Add(parameterInt2, parameterInt1))
+                        {
                             Console.WriteLine("\nError: index out of list!");
+                        }
                     }
                 }
 
@@ -82,9 +86,13 @@ namespace ListNamespace
                 else if (command == commands[4])
                 {
                     if (list.IsEmpty)
+                    {
                         Console.WriteLine("The list is empty!");
+                    }
                     else
+                    {
                         Console.WriteLine("The list is NOT empty!");
+                    }
                 }
 
                 else if (command == commands[5])
@@ -93,16 +101,22 @@ namespace ListNamespace
 
                     parameter1 = Console.ReadLine();
                     if (!Int32.TryParse(parameter1, out parameterInt1))
+                    {
                         Console.WriteLine("\nError: incorrect data!");
+                    }
 
                     else
                     {
                         var result = list.Get(parameterInt1);
 
                         if (!result.success)
+                        {
                             Console.WriteLine("\nError: index out of list!");
+                        }
                         else
+                        {
                             Console.WriteLine("The {0} elemet is: {1}", parameterInt1, result.answer);
+                        }
                     }
                 }
 
@@ -111,24 +125,32 @@ namespace ListNamespace
                     Console.Write("Please, enter the index of list element to change: ");
                     parameter1 = Console.ReadLine();
                     if (!Int32.TryParse(parameter1, out parameterInt1))
+                    {
                         Console.WriteLine("\nError: incorrect data!");
+                    }
 
                     else
                     {
                         Console.Write("Please, enter the number for replacement: ");
                         parameter2 = Console.ReadLine();
                         if (!Int32.TryParse(parameter2, out parameterInt2))
+                        {
                             Console.WriteLine("\nError: incorrect data!");
+                        }
 
                         else if (!list.Change(parameterInt1, parameterInt2))
+                        {
                             Console.WriteLine("\nError: index out of list!");
+                        }
                     }
                 }
 
                 else if (command == commands[7])
                 {
                     if (list.IsEmpty)
+                    {
                         Console.WriteLine("The list is empty!");
+                    }
                     else
                     {
                         Console.WriteLine("The list is:\n");
@@ -139,7 +161,9 @@ namespace ListNamespace
                 else if (command == commands[8])
                 {
                     if (!list.DeleteAll())
+                    {
                         Console.WriteLine("\nThe list is already empty!");
+                    }
                 }
 
                 else if (command == commands[9])
