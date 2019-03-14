@@ -18,6 +18,15 @@ namespace HashTableNameSpace
         private List[] buckets;
         private int size;
 
+        private bool IsCorrectData(string str)
+        {
+            if ((str == "\0") || (str == ""))
+            {
+                return false;
+            }
+            return true;
+        }
+
         private int HashFunction(string str)
         {
             int prime = 7;
@@ -29,40 +38,56 @@ namespace HashTableNameSpace
             return Math.Abs(hash);
         }
 
-        public bool Exist(string findWord)
+        public (bool answer, bool success) Exist(string findWord)
         {
+            if (!IsCorrectData(findWord))
+            {
+                return (false, false);
+            }
+
             int hash = HashFunction(findWord) % buckets.Length;
             if (buckets[hash].Exist(findWord))
             {
-                return true;
+                return (true, true);
             }
-            return false;
+            return (false, true);
         }
         
-        public bool Add(string newWord)
+        public (bool answer, bool success) Add(string newWord)
         {
-	        int hash = HashFunction(newWord) % buckets.Length;
-            if (!Exist(newWord))
+            if (!IsCorrectData(newWord))
             {
-                buckets[hash].Add(1, newWord);
-                return true;
+                return (false, false);
             }
 
-            return false;
+            int hash = HashFunction(newWord) % buckets.Length;
+
+            if (!Exist(newWord).answer)
+            {
+                buckets[hash].Add(1, newWord);
+                return (true, true);
+            }
+
+            return (false, true);
         }
 
-        public bool Delete(string word)
+        public (bool answer, bool success) Delete(string word)
         {
+            if (!IsCorrectData(word))
+            {
+                return (false, false);
+            }
+
             int hash = HashFunction(word) % buckets.Length;
             int indexWord = buckets[hash].Find(word);
 
             if (indexWord != 0)
             {
                 buckets[hash].Delete(indexWord);
-                return true;
+                return (true, true);
             }
 
-            return false;
+            return (false, true);
         }
 
         public void DeleteAll()
