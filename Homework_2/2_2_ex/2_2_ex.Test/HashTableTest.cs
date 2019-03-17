@@ -71,7 +71,7 @@
                 hashTable.Add(testData[i]);
             }
 
-            for (int i = 0; i < testData.Length; ++i)
+            for (int i = 0; i < testDelData.Length; ++i)
             {
                 (bool answer, bool success) result = hashTable.Delete(testDelData[i]);
                 Assert.AreEqual(result.answer, testDelAnswer2[i].answer);
@@ -88,6 +88,7 @@
             hashTable.DeleteAll();
         }
 
+        [TestMethod]
         public void DeleteAllTest()
         {
             string[] testData = { "a", "aa", "aaa", "A" };

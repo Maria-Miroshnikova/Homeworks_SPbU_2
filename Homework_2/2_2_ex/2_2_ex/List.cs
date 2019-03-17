@@ -2,8 +2,14 @@
 
 namespace HashTableNameSpace
 {
+    /// <summary>
+    ///  class List (of strings), made of ListsElements (inner class).
+    /// </summary>
     class List
     {
+        /// <summary>
+        ///  class ListElement (of strings).
+        /// </summary>
         private class ListElement
         {
             public ListElement(string data, ListElement next)
@@ -34,7 +40,12 @@ namespace HashTableNameSpace
             }
             return element;
         }
-        
+
+        /// <summary>
+        /// The method which find the word in list.
+        /// </summary>
+        /// <param name="data"> The word which you want to find </param>
+        /// <returns> the index of the word in list or 0 if it doesn`t present.</returns>
         public int Find(string data)
         {
             for (int i = 1; i <= size; ++i)
@@ -48,6 +59,11 @@ namespace HashTableNameSpace
             return 0;
         }
 
+        /// <summary>
+        /// The method which checks if the word presents in list.
+        /// </summary>
+        /// <param name="data"> The word which presence you want to check.</param>
+        /// <returns> true if the word presents and false otherwise.</returns>
         public bool Exist(string data)
         {
             for (int i = 1; i <= size; ++i)
@@ -60,6 +76,12 @@ namespace HashTableNameSpace
             return false;
         }
 
+        /// <summary>
+        /// The method which adds if the word to the position of list.
+        /// </summary>
+        /// <param name="index"> The position of list to which you want to add the element.</param>
+        /// <param name="data"> The word which you want to add to the position of list.</param>
+        /// <returns> true if the word was added and false if the position was incorrect</returns>
         public bool Add(int index, string data)
         {
             if ((index > size + 1) || (index < 1))
@@ -84,6 +106,12 @@ namespace HashTableNameSpace
             return true;
         }
 
+        /// <summary>
+        /// The method which shows the word from the position of list.
+        /// </summary>
+        /// <param name="index"> The index of list from which you want to see the element.</param>
+        /// <returns>(smth, false) - if the index wac incorrect
+        /// (string, true) - otherwise.</returns>
         public (string answer, bool success) Get(int index)
         {
             (string answer, bool success) result = (null, false);
@@ -106,6 +134,12 @@ namespace HashTableNameSpace
             return result;
         }
 
+        /// <summary>
+        /// The method which replaces a word from the position of list with another element.
+        /// </summary>
+        /// <param name="index"> The position of list the elemnt from which you want to change.</param>
+        /// <param name="data"> The word for replacement.</param>
+        /// <returns> true if the word was replaced and false if the position is incorrect.</returns>
         public bool Change(int index, string data)
         {
             if ((index > size) || (index < 1))
@@ -123,6 +157,10 @@ namespace HashTableNameSpace
             return true;
         }
 
+        /// <summary>
+        /// The method which returns all the words from list.
+        /// </summary>
+        /// <returns> the array of strings with list`s words.</returns>
         public string[] GetAll()
         {
             var outputList = new string[size];
@@ -133,6 +171,11 @@ namespace HashTableNameSpace
             return outputList;
         }
 
+        /// <summary>
+        /// The method which deletes a word from the position of list.
+        /// </summary>
+        /// <param name="index"> The position of list from which you want to delete a word.</param>
+        /// <returns></returns>
         public bool Delete(int index)
         {
             if ((index > size) || (index < 1))
@@ -153,6 +196,10 @@ namespace HashTableNameSpace
             return true;
         }
 
+        /// <summary>
+        /// The method which deletes all word from list.
+        /// </summary>
+        /// <returns> false if list wasn`t empty and true otherwise.</returns>
         public bool DeleteAll()
         {
             if (IsEmpty)
