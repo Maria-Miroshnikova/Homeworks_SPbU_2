@@ -21,13 +21,7 @@ namespace HashTableNameSpace
         private int size;
 
         private bool IsCorrectData(string str)
-        {
-            if ((str == "\0") || (str == ""))
-            {
-                return false;
-            }
-            return true;
-        }
+            => (str != "") && (str != "\0");
 
         private int HashFunction(string str)
         {

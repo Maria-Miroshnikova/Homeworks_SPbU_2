@@ -8,45 +8,62 @@
     public class HashTableTest
     {
         [TestInitialize]
-
         public void Initialize()
         {
-            int size = 5;
-            hashTable = new HashTable(size);
+            hashTable = new HashTable(5);
         }
 
         private HashTable hashTable;
 
         [TestMethod]
-        public void AddAndExistTest()
+        public void ExistInEmptyHashTest()
         {
-            string[] testData = { "a", "aa", "aaa", "a", "A", "", "\0"};
+            string[] testData = { "a", "aa", "aaa", "a", "A", "", "\0" };
             (bool answer, bool success)[] testExAnswer1 = { (false, true), (false, true), (false, true), (false, true), (false, true), (false, false), (false, false) };
-            (bool answer, bool success)[] testAddAnswer = { (true, true), (true, true), (true, true), (false, true), (true, true), (false, false), (false, false) };
-            (bool answer, bool success)[] testExAnswer2 = { (true, true), (true, true), (true, true), (true, true), (true, true), (false, false), (false, false) };
 
             for (int i = 0; i < testData.Length; ++i)
             {
                 (bool answer, bool success) result = hashTable.Exist(testData[i]);
-                Assert.AreEqual(result.answer, testExAnswer1[i].answer);
-                Assert.AreEqual(result.success, testExAnswer1[i].success);
+                Assert.AreEqual(testExAnswer1[i].answer, result.answer);
+                Assert.AreEqual(testExAnswer1[i].success, result.success);
             }
+        }
+
+        [TestMethod]
+        public void AddAndExistTest()
+        {
+            string[] testData = { "a", "aa", "aaa", "a", "A", "", "\0"};
+            (bool answer, bool success)[] testAddAnswer = { (true, true), (true, true), (true, true), (false, true), (true, true), (false, false), (false, false) };
+            (bool answer, bool success)[] testExAnswer = { (true, true), (true, true), (true, true), (true, true), (true, true), (false, false), (false, false) };
 
             for (int i = 0; i < testData.Length; ++i)
             {
                 (bool answer, bool success) result = hashTable.Add(testData[i]);
-                Assert.AreEqual(result.answer, testAddAnswer[i].answer);
-                Assert.AreEqual(result.success, testAddAnswer[i].success);
+                Assert.AreEqual(testAddAnswer[i].answer, result.answer);
+                Assert.AreEqual(testAddAnswer[i].success, result.success);
             }
 
             for (int i = 0; i < testData.Length; ++i)
             {
                 (bool answer, bool success) result = hashTable.Exist(testData[i]);
-                Assert.AreEqual(result.answer, testExAnswer2[i].answer);
-                Assert.AreEqual(result.success, testExAnswer2[i].success);
+                Assert.AreEqual(testExAnswer[i].answer, result.answer);
+                Assert.AreEqual(testExAnswer[i].success, result.success);
             }
+        }
 
-            hashTable.DeleteAll();
+        [TestMethod]
+        public void DeleteFromEmptyHashTest()
+        {
+            string[] testData = { "a", "aa", "aaa", "A", "", "\0" };
+
+            (bool answer, bool success)[] testDelAnswer = { (false, true), (false, true), (false, true), (false, true), (false, false), (false, false) };
+
+            for (int i = 0; i < testData.Length; ++i)
+            {
+                (bool answer, bool success) result = hashTable.Delete(testData[i]);
+                Assert.AreEqual(testDelAnswer[i].answer, result.answer);
+                Assert.AreEqual(testDelAnswer[i].success, result.success);
+            }
         }
 
         [TestMethod]
@@ -54,17 +71,9 @@
         {
             string[] testData = { "a", "aa", "aaa", "A", "", "\0" };
             string[] testDelData = { "a", "aaa", "a", "", "\0" };
-
-            (bool answer, bool success)[] testDelAnswer1 = { (false, true), (false, true), (false, true), (false, true), (false, false), (false, false) };
-            (bool answer, bool success)[] testDelAnswer2 = { (true, true), (true, true), (false, true), (false, false), (false, false) };
+            
+            (bool answer, bool success)[] testDelAnswer = { (true, true), (true, true), (false, true), (false, false), (false, false) };
             (bool answer, bool success)[] testExAnswer = { (false, true), (true, true), (false, true), (true, true), (false, false), (false, false) };
-
-            for (int i = 0; i < testData.Length; ++i)
-            {
-                (bool answer, bool success) result = hashTable.Delete(testData[i]);
-                Assert.AreEqual(result.answer, testDelAnswer1[i].answer);
-                Assert.AreEqual(result.success, testDelAnswer1[i].success);
-            }
 
             for (int i = 0; i < testData.Length; ++i)
             {
@@ -74,18 +83,16 @@
             for (int i = 0; i < testDelData.Length; ++i)
             {
                 (bool answer, bool success) result = hashTable.Delete(testDelData[i]);
-                Assert.AreEqual(result.answer, testDelAnswer2[i].answer);
-                Assert.AreEqual(result.success, testDelAnswer2[i].success);
+                Assert.AreEqual(testDelAnswer[i].answer, result.answer);
+                Assert.AreEqual(testDelAnswer[i].success, result.success);
             }
 
             for (int i = 0; i < testData.Length; ++i)
             {
                 (bool answer, bool success) result = hashTable.Exist(testData[i]);
-                Assert.AreEqual(result.answer, testExAnswer[i].answer);
-                Assert.AreEqual(result.success, testExAnswer[i].success);
+                Assert.AreEqual(testExAnswer[i].answer, result.answer);
+                Assert.AreEqual(testExAnswer[i].success, result.success);
             }
-            
-            hashTable.DeleteAll();
         }
 
         [TestMethod]
