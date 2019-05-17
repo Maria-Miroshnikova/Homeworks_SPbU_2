@@ -7,6 +7,9 @@ namespace HashTableNameSpace
     /// </summary>
     public class HashTable
     {
+        private List[] buckets;
+        private int size;
+
         public HashTable(int size)
         {
             this.buckets = new List[size];
@@ -16,9 +19,6 @@ namespace HashTableNameSpace
             }
             this.size = size;
         }
-
-        private List[] buckets;
-        private int size;
 
         private bool IsCorrectData(string str)
             => (str != "") && (str != "\0");
