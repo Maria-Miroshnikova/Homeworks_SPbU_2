@@ -10,7 +10,7 @@
         [TestInitialize]
         public void Initialize()
         {
-            hashTable = new HashTable(5);
+            hashTable = new HashTable();
         }
 
         private HashTable hashTable;
@@ -92,6 +92,22 @@
                 (bool answer, bool success) result = hashTable.Exist(testData[i]);
                 Assert.AreEqual(testExAnswer[i].answer, result.answer);
                 Assert.AreEqual(testExAnswer[i].success, result.success);
+            }
+        }
+
+        [TestMethod]
+        public void UpdateTest()
+        {
+            string[] testData = { "a", "aa", "aaa", "A", "b", "BB", "bb", "Bb", "bB" };
+
+            foreach (string str in testData)
+            {
+                hashTable.Add(str);
+            }
+
+            foreach (string str in testData)
+            {
+                Assert.IsTrue(hashTable.Exist(str).answer);
             }
         }
 

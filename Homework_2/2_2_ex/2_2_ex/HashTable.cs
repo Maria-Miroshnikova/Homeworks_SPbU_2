@@ -10,18 +10,33 @@ namespace HashTableNameSpace
         private List[] buckets;
         private int size;
 
-        public HashTable(int size)
+        public HashTable(int size = 5)
         {
+            this.size = size;
             this.buckets = new List[size];
             for (int i = 0; i < size; ++i)
             {
                 this.buckets[i] = new List();
             }
-            this.size = size;
         }
 
-        private bool IsCorrectData(string str)
-            => (str != "") && (str != "\0");
+        private double LoadFactor
+        {
+            get
+            {
+                int countNotEmptyEntries = 0;
+                for (int i = 0; i < size; ++i)
+                {
+                    if (!buckets[i].IsEmpty)
+                    {
+                        ++countNotEmptyEntries;
+                    }
+                }
+                return ((countNotEmptyEntries * 1.0) / size);
+            }
+        }
+
+        private bool IsCorrectData(string str) => (str != "") && (str != "\0");
 
         private int HashFunction(string str)
         {
@@ -32,6 +47,29 @@ namespace HashTableNameSpace
                 hash = hash * prime + (i - '0');
             }
             return Math.Abs(hash);
+        }
+
+        private void UpdateHashTable()
+        {
+            double maxLoadFactor = 0.7;
+
+            if (LoadFactor >= maxLoadFactor)
+            {
+                int updateSizeFactor = 2;
+
+                var newHashTable = new HashTable(size * updateSizeFactor);
+
+                for (int i = 0; i < size; ++i)
+                {
+                    for (int j = 1; j <= buckets[i].Size; ++j)
+                    {
+                        newHashTable.Add(buckets[i].Get(j).answer);
+                    }
+                }
+
+                buckets = newHashTable.buckets;
+                size = newHashTable.size;
+            }
         }
 
         /// <summary>
@@ -70,6 +108,8 @@ namespace HashTableNameSpace
             {
                 return (false, false);
             }
+
+            UpdateHashTable();
 
             int hash = HashFunction(newWord) % buckets.Length;
 

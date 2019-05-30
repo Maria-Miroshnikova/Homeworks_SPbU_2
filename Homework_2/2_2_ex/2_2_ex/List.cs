@@ -77,7 +77,7 @@ namespace HashTableNameSpace
         }
 
         /// <summary>
-        /// The method which adds if the word to the position of list.
+        /// The method which adds the word to the position of list.
         /// </summary>
         /// <param name="index"> The position of list to which you want to add the element.</param>
         /// <param name="data"> The word which you want to add to the position of list.</param>
