@@ -23,22 +23,6 @@ namespace HashTableNameSpace
             this.loadFactor = 0;
         }
 
-/*        private double LoadFactor
-        {
-            get
-            {
-                int countNotEmptyEntries = 0;
-                for (int i = 0; i < size; ++i)
-                {
-                    if (!buckets[i].IsEmpty)
-                    {
-                        ++countNotEmptyEntries;
-                    }
-                }
-                return ((countNotEmptyEntries * 1.0) / size);
-            }
-        }*/
-
         private bool IsCorrectData(string str) => (str != "") && (str != "\0");
 
         private int HashFunction(string str)
