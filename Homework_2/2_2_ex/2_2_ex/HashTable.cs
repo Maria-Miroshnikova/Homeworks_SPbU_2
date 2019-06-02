@@ -9,6 +9,8 @@ namespace HashTableNameSpace
     {
         private List[] buckets;
         private int size;
+        private int notEmptyBuckets;
+        private double loadFactor;
 
         public HashTable(int size = 5)
         {
@@ -18,9 +20,10 @@ namespace HashTableNameSpace
             {
                 this.buckets[i] = new List();
             }
+            this.loadFactor = 0;
         }
 
-        private double LoadFactor
+/*        private double LoadFactor
         {
             get
             {
@@ -34,7 +37,7 @@ namespace HashTableNameSpace
                 }
                 return ((countNotEmptyEntries * 1.0) / size);
             }
-        }
+        }*/
 
         private bool IsCorrectData(string str) => (str != "") && (str != "\0");
 
@@ -53,7 +56,7 @@ namespace HashTableNameSpace
         {
             double maxLoadFactor = 0.7;
 
-            if (LoadFactor >= maxLoadFactor)
+            if (loadFactor >= maxLoadFactor)
             {
                 int updateSizeFactor = 2;
 
@@ -69,6 +72,8 @@ namespace HashTableNameSpace
 
                 buckets = newHashTable.buckets;
                 size = newHashTable.size;
+                notEmptyBuckets = newHashTable.notEmptyBuckets;
+                loadFactor = newHashTable.loadFactor;
             }
         }
 
@@ -88,11 +93,7 @@ namespace HashTableNameSpace
 
             int hash = HashFunction(findWord) % buckets.Length;
 
-            if (buckets[hash].Exist(findWord))
-            {
-                return (true, true);
-            }
-            return (false, true);
+            return (buckets[hash].Exist(findWord), true);
         }
 
         /// <summary>
@@ -115,6 +116,11 @@ namespace HashTableNameSpace
 
             if (!Exist(newWord).answer)
             {
+                if (buckets[hash].IsEmpty)
+                {
+                    ++notEmptyBuckets;
+                    loadFactor = (notEmptyBuckets * 1.0) / size;
+                }
                 buckets[hash].Add(1, newWord);
                 return (true, true);
             }
@@ -142,6 +148,11 @@ namespace HashTableNameSpace
             if (indexWord != 0)
             {
                 buckets[hash].Delete(indexWord);
+                if (buckets[hash].IsEmpty)
+                {
+                    --notEmptyBuckets;
+                    loadFactor = (notEmptyBuckets * 1.0) / size;
+                }
                 return (true, true);
             }
 

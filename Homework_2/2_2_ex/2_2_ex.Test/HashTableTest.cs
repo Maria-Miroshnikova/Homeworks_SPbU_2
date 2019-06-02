@@ -34,7 +34,7 @@
         {
             string[] testData = { "a", "aa", "aaa", "a", "A", "", "\0"};
             (bool answer, bool success)[] testAddAnswer = { (true, true), (true, true), (true, true), (false, true), (true, true), (false, false), (false, false) };
-            (bool answer, bool success)[] testExAnswer = { (true, true), (true, true), (true, true), (true, true), (true, true), (false, false), (false, false) };
+            (bool answer, bool success)[] testExistAnswer = { (true, true), (true, true), (true, true), (true, true), (true, true), (false, false), (false, false) };
 
             for (int i = 0; i < testData.Length; ++i)
             {
@@ -46,8 +46,8 @@
             for (int i = 0; i < testData.Length; ++i)
             {
                 (bool answer, bool success) result = hashTable.Exist(testData[i]);
-                Assert.AreEqual(testExAnswer[i].answer, result.answer);
-                Assert.AreEqual(testExAnswer[i].success, result.success);
+                Assert.AreEqual(testExistAnswer[i].answer, result.answer);
+                Assert.AreEqual(testExistAnswer[i].success, result.success);
             }
         }
 
