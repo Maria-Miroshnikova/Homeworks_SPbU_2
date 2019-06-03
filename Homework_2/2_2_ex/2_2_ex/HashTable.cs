@@ -152,6 +152,16 @@ namespace HashTableNameSpace
             {
                 buckets[i].DeleteAll();
             }
+
+            int startSize = 5;
+            buckets = new List[startSize];
+            for (int i = 0; i < size; ++i)
+            {
+                buckets[i] = new List();
+            }
+            size = startSize;
+            loadFactor = 0;
+            notEmptyBuckets = 0;
         }
     }
 }
