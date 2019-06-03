@@ -2,7 +2,10 @@
 
 namespace StackNameSpace
 {
-    interface IStackable
+    /// <summary>
+    /// Interface, which requires objects to behave like stack.
+    /// </summary>
+    public interface IStackable
     {
         int Size { get; }
         bool IsEmpty { get; }

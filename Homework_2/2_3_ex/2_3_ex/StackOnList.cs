@@ -5,7 +5,7 @@ namespace StackNameSpace
     /// <summary>
     /// Class Stack2 (of ints), which looks like list of ints.
     /// </summary>
-    class Stack2 : IStackable
+    public class StackOnList : IStackable
     {
         /// <summary>
         /// Inner (for Stack2) class StackElement, which contains data (int) and pointer to the next element of stack.
@@ -22,17 +22,22 @@ namespace StackNameSpace
             public StackElement Next { get; set; }
         }
 
-        StackElement head;
-        int size;
+        private StackElement head;
+        private int size;
 
+        /// <summary>
+        /// This property returns the size of the stack;
+        /// </summary>
         public int Size => size;
 
+        /// <summary>
+        /// This property returns if the stack is empty;
+        /// </summary>
         public bool IsEmpty => head == null;
 
         /// <summary>
         /// This method adds data to the stack;
         /// </summary>
-        /// <param name="data"></param>
         public void Push(int data)
         {
             var newElement = new StackElement(data, head);
@@ -43,7 +48,6 @@ namespace StackNameSpace
         /// <summary>
         /// This method deletes the first element of the stack and returns it;
         /// </summary>
-        /// <returns></returns>
         public (int answer, bool success) Pop()
         {
             (int answer, bool success) result = (0, false);

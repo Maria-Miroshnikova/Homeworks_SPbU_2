@@ -5,39 +5,40 @@ namespace StackNameSpace
     /// <summary>
     /// Class Stack1 (of ints), based on array of ints.
     /// </summary>
-    class Stack1 : IStackable
+    public class StackOnArray : IStackable
     {
         private int head;
-        private int size;
         private int[] stack;
 
-        public Stack1()
+        public StackOnArray()
         {
             int size = 1000;
-            this.size = size;
             this.stack = new int[size];
             this.head = -1;
         }
 
-        public int Size => size;
+        /// <summary>
+        /// This property returns the size of the stack;
+        /// </summary>
+        public int Size => stack.Length;
 
+        /// <summary>
+        /// This property returns if the stack is empty;
+        /// </summary>
         public bool IsEmpty => head == -1;
 
         /// <summary>
         /// This method adds element to the stack;
         /// </summary>
-        /// <param name="data"></param>
         public void Push(int data)
         {
             ++head;
-            ++size;
             stack[head] = data;
         }
 
         /// <summary>
         /// This method deletes element from the stack and return it;
         /// </summary>
-        /// <returns></returns>
         public (int answer, bool success) Pop()
         {
             (int answer, bool success) result = (0, false);
@@ -49,7 +50,6 @@ namespace StackNameSpace
 
             result = (stack[head], true);
             --head;
-            --size;
             return result;
         }
 
@@ -57,8 +57,6 @@ namespace StackNameSpace
         /// This method deletes the stack;
         /// </summary>
         public void Clear()
-        {
-            stack = null;
-        }
+        => stack = null;
     }
 }

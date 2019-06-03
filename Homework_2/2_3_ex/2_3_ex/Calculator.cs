@@ -5,25 +5,36 @@ namespace StackNameSpace
     /// <summary>
     /// Class Calculator, which provides to calculate the value of expression (in postfix form), which contains numbers and ' +-*/' only.
     /// </summary>
-    public static class Calculator
+    public class Calculator
     {
+        private IStackable stack;
+
+        public Calculator(IStackable stack = null)
+        {
+            if (stack == null)
+            {
+                this.stack = new StackOnArray();
+            }
+            else
+            {
+                this.stack = stack;
+            }
+        }
+
+        private bool IsNotEmptyData(string data)
+        => (data != "") && (data != null);
+
         /// <summary>
         /// This method calculates and returns the value of expression.
         /// </summary>
         /// <param name="data"></param>
         /// <param name="stackType"></param>
         /// <returns></returns>
-        public static int Calculate(string data, int stackType)
+        public (int answer, bool success) Calculate(string data)
         {
-            IStackable stack;
-
-            if (stackType == 1)
+            if (!IsNotEmptyData(data))
             {
-                stack = new Stack1();
-            }
-            else
-            {
-                stack = new Stack2();
+                return (0, false);
             }
 
             for (int i = 0; i < data.Length; ++i)
@@ -61,8 +72,7 @@ namespace StackNameSpace
             }
 
             int answer = stack.Pop().answer;
-            stack.Clear();
-            return answer;
+            return (answer, true);
         }
     }
 }

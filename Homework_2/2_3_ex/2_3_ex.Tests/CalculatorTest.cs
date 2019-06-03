@@ -7,63 +7,87 @@ namespace StackNameSpace.Tests
     public class CalculatorTest
     {
         [TestMethod]
-        public void Stack1Test1()
+        public void StackOnArrayEasyTest()
         {
-            string testData = "9 6 - 1 2 + *";
-            int testAnswer = 9;
-            int stackType = 1;
+            string[] testData = { "9 6 - 1 2 + *", "5 2 * 5 / 3 + 2 * 1 -", "1 2 - 1 2 - *1 2 - *" };
+            (int, bool)[] testAnswer = { (9, true), (9, true), (-1, true) };
+            var calculator = new Calculator(new StackOnArray());
 
-            Assert.AreEqual(testAnswer, Calculator.Calculate(testData, stackType));
+
+            for (int i = 0; i < testAnswer.Length; ++i)
+            {
+                Assert.AreEqual(testAnswer[i], calculator.Calculate(testData[i]));
+            }
         }
 
         [TestMethod]
-        public void Stack1Test2()
+        public void StackOnListEasyTest()
         {
-            string testData = "5 2 * 5 / 3 + 2 * 1 -";
-            int testAnswer = 9;
-            int stackType = 1;
+            string[] testData = { "9 6 - 1 2 + *", "5 2 * 5 / 3 + 2 * 1 -", "1 2 - 1 2 - *1 2 - *" };
+            (int, bool)[] testAnswer = { (9, true), (9, true), (-1, true) };
+            var calculator = new Calculator(new StackOnList());
 
-            Assert.AreEqual(testAnswer, Calculator.Calculate(testData, stackType));
+            for (int i = 0; i < testAnswer.Length; ++i)
+            {
+                Assert.AreEqual(testAnswer[i], calculator.Calculate(testData[i]));
+            }
         }
 
         [TestMethod]
-        public void Stack1Test3()
+        public void NoStackTest()
         {
-            string testData = "1 2 - 1 2 - *1 2 - *";
-            int testAnswer = -1;
-            int stackType = 1;
+            string[] testData = { "9 6 - 1 2 + *", "5 2 * 5 / 3 + 2 * 1 -", "1 2 - 1 2 - *1 2 - *" };
+            (int, bool)[] testAnswer = { (9, true), (9, true), (-1, true) };
+            var calculator = new Calculator();
 
-            Assert.AreEqual(testAnswer, Calculator.Calculate(testData, stackType));
+
+            for (int i = 0; i < testAnswer.Length; ++i)
+            {
+                Assert.AreEqual(testAnswer[i], calculator.Calculate(testData[i]));
+            }
         }
 
         [TestMethod]
-        public void Stack2Test1()
+        public void NullStackTest()
         {
-            string testData = "9 6 - 1 2 + *";
-            int testAnswer = 9;
-            int stackType = 2;
+            string[] testData = { "9 6 - 1 2 + *", "5 2 * 5 / 3 + 2 * 1 -", "1 2 - 1 2 - *1 2 - *" };
+            (int, bool)[] testAnswer = { (9, true), (9, true), (-1, true) };
+            var calculator = new Calculator(null);
 
-            Assert.AreEqual(testAnswer, Calculator.Calculate(testData, stackType));
+
+            for (int i = 0; i < testAnswer.Length; ++i)
+            {
+                Assert.AreEqual(testAnswer[i], calculator.Calculate(testData[i]));
+            }
         }
 
         [TestMethod]
-        public void Stack2Test2()
+        public void EmptyDataStackOnArrayTest()
         {
-            string testData = "5 2 * 5 / 3 + 2 * 1 -";
-            int testAnswer = 9;
-            int stackType = 2;
+            string[] testData = { "", null };
+            (int, bool)[] testAnswer = { (0, false), (0, false)};
+            var calculator = new Calculator(new StackOnArray());
 
-            Assert.AreEqual(testAnswer, Calculator.Calculate(testData, stackType));
+
+            for (int i = 0; i < testAnswer.Length; ++i)
+            {
+                Assert.AreEqual(testAnswer[i], calculator.Calculate(testData[i]));
+            }
         }
 
         [TestMethod]
-        public void Stack2Test3()
+        public void EmptyDataStackOnListTest()
         {
-            string testData = "1 2 - 1 2 - *1 2 - *";
-            int testAnswer = -1;
-            int stackType = 2;
+            string[] testData = { "", null };
+            (int, bool)[] testAnswer = { (0, false), (0, false) };
+            var calculator = new Calculator(new StackOnList());
 
-            Assert.AreEqual(testAnswer, Calculator.Calculate(testData, stackType));
+
+            for (int i = 0; i < testAnswer.Length; ++i)
+            {
+                Assert.AreEqual(testAnswer[i], calculator.Calculate(testData[i]));
+            }
         }
     }
+        
 }
