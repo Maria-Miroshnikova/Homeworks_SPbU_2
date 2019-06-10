@@ -7,13 +7,13 @@ namespace StackNameSpace
     /// </summary>
     public class Calculator
     {
-        private IStackable stack;
+        private IStack stack;
 
-        public Calculator(IStackable stack = null)
+        public Calculator(IStack stack = null)
         {
             if (stack == null)
             {
-                this.stack = new StackOnArray();
+                throw new NullStackException();
             }
             else
             {
@@ -22,7 +22,7 @@ namespace StackNameSpace
         }
 
         private bool IsNotEmptyData(string data)
-        => (data != "") && (data != null);
+            => (data != "") && (data != null);
 
         /// <summary>
         /// This method calculates and returns the value of expression.

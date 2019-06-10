@@ -5,7 +5,7 @@ namespace StackNameSpace
     /// <summary>
     /// Class Stack1 (of ints), based on array of ints.
     /// </summary>
-    public class StackOnArray : IStackable
+    public class StackOnArray : IStack
     {
         private int head;
         private int[] stack;
@@ -20,7 +20,7 @@ namespace StackNameSpace
         /// <summary>
         /// This property returns the size of the stack;
         /// </summary>
-        public int Size => stack.Length;
+        public int Size => head + 1;
 
         /// <summary>
         /// This property returns if the stack is empty;
@@ -29,9 +29,15 @@ namespace StackNameSpace
 
         /// <summary>
         /// This method adds element to the stack;
+        /// If size is 1000, there will be TooMuchElementsInStackException;
         /// </summary>
         public void Push(int data)
         {
+            if (Size == 1000)
+            {
+                throw new TooMuchElementsInStackException();
+            }
+
             ++head;
             stack[head] = data;
         }
@@ -57,6 +63,6 @@ namespace StackNameSpace
         /// This method deletes the stack;
         /// </summary>
         public void Clear()
-        => stack = null;
+            => stack = null;
     }
 }

@@ -5,7 +5,7 @@ namespace StackNameSpace
     /// <summary>
     /// Class Stack2 (of ints), which looks like list of ints.
     /// </summary>
-    public class StackOnList : IStackable
+    public class StackOnList : IStack
     {
         /// <summary>
         /// Inner (for Stack2) class StackElement, which contains data (int) and pointer to the next element of stack.
@@ -37,9 +37,16 @@ namespace StackNameSpace
 
         /// <summary>
         /// This method adds data to the stack;
+        /// If size is 1000, there will be TooMuchElementsInStackException;
         /// </summary>
         public void Push(int data)
         {
+            int maxSize = 1000;
+            if (Size == maxSize)
+            {
+                throw new TooMuchElementsInStackException();
+            }
+
             var newElement = new StackElement(data, head);
             head = newElement;
             ++size;

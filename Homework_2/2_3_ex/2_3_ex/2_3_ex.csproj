@@ -44,11 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calculator.cs" />
-    <Compile Include="IStackable.cs" />
+    <Compile Include="IStack.cs" />
+    <Compile Include="NullStackException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StackOnArray.cs" />
     <Compile Include="StackOnList.cs" />
+    <Compile Include="TooMuchElementsInStackException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
