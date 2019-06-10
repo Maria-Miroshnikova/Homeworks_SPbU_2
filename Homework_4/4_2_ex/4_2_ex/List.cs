@@ -22,8 +22,8 @@ namespace UniqueListNameSpace
             public ListElement Next { get; set; }
         }
 
-        protected ListElement head;
-        protected int size;
+        private ListElement head;
+        private int size;
 
         /// <summary>
         /// This property returns if the list is empty.
@@ -88,7 +88,7 @@ namespace UniqueListNameSpace
         /// <param name="index"> The position of list to which you want to add the element.</param>
         /// <param name="data"> The word which you want to add to the position of list.</param>
         /// <returns> true if the word was added and false if the position was incorrect</returns>
-        public bool Add(int index, string data)
+        public virtual bool Add(int index, string data)
         {
             if ((index > size + 1) || (index < 1))
             {
@@ -146,7 +146,7 @@ namespace UniqueListNameSpace
         /// <param name="index"> The position of list the elemnt from which you want to change.</param>
         /// <param name="data"> The word for replacement.</param>
         /// <returns> true if the word was replaced and false if the position is incorrect.</returns>
-        public bool Change(int index, string data)
+        public virtual bool Change(int index, string data)
         {
             if ((index > size) || (index < 1))
             {
@@ -181,13 +181,12 @@ namespace UniqueListNameSpace
         /// The method which deletes the word from the list.
         /// </summary>
         /// <param name="data"> The word which you want to delete from the list.</param>
-        /// <returns>True if this word existed in list and false else.</returns>
-        public bool Delete(string data)
+        public virtual void Delete(string data)
         {
             int index = Find(data);
             if (index == 0)
             {
-                return false;
+                return;
             }
 
             if (index == 1)
@@ -200,8 +199,6 @@ namespace UniqueListNameSpace
                 element.Next = element.Next.Next;
             }
             --this.size;
-
-            return true;
         }
 
         /// <summary>

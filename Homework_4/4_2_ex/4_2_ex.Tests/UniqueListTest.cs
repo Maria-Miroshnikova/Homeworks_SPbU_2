@@ -40,7 +40,7 @@ namespace UniqueListNameSpace.Tests
                 list.Add(i + 1, testData[i]);
             }
 
-            for (int i = 0; i < testData.Length; i+=2)
+            for (int i = 0; i < testData.Length; i += 2)
             {
                 list.Delete(testData[i]);
             }
@@ -56,6 +56,27 @@ namespace UniqueListNameSpace.Tests
             }
 
             Assert.IsTrue(list.IsEmpty);
+        }
+
+        [TestMethod]
+        public void EasyChangeTest()
+        {
+            string[] testData = { "a", "aa", "AA" };
+            string[] testNewData = { "b", "bb", "a" };
+
+            for (int i = 0; i < testData.Length; ++i)
+            {
+                list.Add(i + 1, testData[i]);
+            }
+            for (int i = 0; i < testNewData.Length; ++i)
+            {
+                list.Change(i + 1, testNewData[i]);
+            }
+
+            for (int i = 0; i < testNewData.Length; ++i)
+            {
+                Assert.AreEqual(testNewData[i], list.Get(i + 1).answer);
+            }
         }
 
         [TestMethod]
@@ -91,5 +112,35 @@ namespace UniqueListNameSpace.Tests
                 list.Delete(testData[i]);
             }
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(AddExistElementException))]
+        public void ChangeElementToAlreadyExistingTest()
+        {
+            string[] testData = { "a", "aa", "AA" };
+            string testReplacement = testData[0];
+
+            for (int i = 0; i < testData.Length; ++i)
+            {
+                list.Add(i + 1, testData[i]);
+            }
+
+            for (int i = 0; i < testData.Length; ++i)
+            {
+                list.Change(i + 1, testReplacement);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AddExistElementException))]
+        public void TruePolimorphismTest()
+        {
+            string testData = "AAA";
+            List notUniqueList = list;
+
+            notUniqueList.Add(1, testData);
+            notUniqueList.Add(1, testData);
+        }
+
     }
 }

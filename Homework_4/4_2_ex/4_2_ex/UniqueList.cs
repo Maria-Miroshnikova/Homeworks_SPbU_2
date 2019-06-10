@@ -13,40 +13,21 @@ namespace UniqueListNameSpace
         /// <param name="index"> The position of list to which you want to add the element.</param>
         /// <param name="data"> The word which you want to add to the position of list.</param>
         /// <returns> true if the word was added and false if the position was incorrect</returns>
-        public new bool Add(int index, string data)
+        public override bool Add(int index, string data)
         {
-            if ((index > size + 1) || (index < 1))
-            {
-                return false;
-            }
-
             if (Exist(data))
             {
                 throw new AddExistElementException();
             }
 
-            var newElement = new ListElement(data, null);
-            ++this.size;
-
-            if (index == 1)
-            {
-                newElement.Next = head;
-                this.head = newElement;
-                return true;
-            }
-
-            ListElement element = FindPrevious(index);
-
-            newElement.Next = element.Next;
-            element.Next = newElement;
-            return true;
+            return base.Add(index, data);
         }
 
         /// <summary>
         /// The method which deletes the word from the list and throws exception if the word doesn`t exist in the list.
         /// </summary>
         /// <param name="data"> The word which you want to delete from the list.</param>
-        public new void Delete(string data)
+        public override void Delete(string data)
         {
             int index = Find(data);
             if (index == 0)
@@ -54,16 +35,24 @@ namespace UniqueListNameSpace
                 throw new DeleteNotExistElementException();
             }
 
-            if (index == 1)
+            base.Delete(data);
+        }
+
+        /// <summary>
+        /// The method which replaces a word from the position of list with another element.
+        /// It throws exception if the word for replacement already exists in the list.
+        /// </summary>
+        /// <param name="index"> The position of list the elemnt from which you want to change.</param>
+        /// <param name="data"> The word for replacement.</param>
+        /// <returns> true if the word was replaced and false if the position is incorrect.</returns>
+        public override bool Change(int index, string data)
+        {
+            if (Exist(data) && (Find(data) != index))
             {
-                head = head.Next;
+                throw new AddExistElementException();
             }
-            else
-            {
-                var element = FindPrevious(index);
-                element.Next = element.Next.Next;
-            }
-            --this.size;
+
+            return base.Change(index, data);
         }
     }
 }
