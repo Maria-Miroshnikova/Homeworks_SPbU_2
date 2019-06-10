@@ -27,6 +27,8 @@ namespace HashTableNameSpace
 
         private bool IsCorrectData(string str) => (str != "") && (str != "\0");
 
+        private int Hash(string data) => Math.Abs(hashFunction.HashFunction(data) % buckets.Length);
+
         private void UpdateHashTable()
         {
             double maxLoadFactor = 0.7;
@@ -66,7 +68,7 @@ namespace HashTableNameSpace
                 return (false, false);
             }
 
-            int hash = Math.Abs(hashFunction.HashFunction(findWord) % buckets.Length);
+            int hash = Hash(findWord);
 
             return (buckets[hash].Exist(findWord), true);
         }
@@ -87,7 +89,7 @@ namespace HashTableNameSpace
 
             UpdateHashTable();
 
-            int hash = Math.Abs(hashFunction.HashFunction(newWord) % buckets.Length);
+            int hash = Hash(newWord);
 
             if (!Exist(newWord).answer)
             {
@@ -117,7 +119,7 @@ namespace HashTableNameSpace
                 return (false, false);
             }
 
-            int hash = Math.Abs(hashFunction.HashFunction(word) % buckets.Length);
+            int hash = Hash(word);
             int indexWord = buckets[hash].Find(word);
 
             if (indexWord != 0)
@@ -143,6 +145,16 @@ namespace HashTableNameSpace
             {
                 buckets[i].DeleteAll();
             }
+
+            int startSize = 5;
+            buckets = new List[startSize];
+            for (int i = 0; i < size; ++i)
+            {
+                buckets[i] = new List();
+            }
+            size = startSize;
+            loadFactor = 0;
+            notEmptyBuckets = 0;
         }
     }
 }

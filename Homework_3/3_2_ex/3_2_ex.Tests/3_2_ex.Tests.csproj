@@ -49,9 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HashTableTest1.cs" />
-    <Compile Include="HashTableTest2.cs" />
-    <Compile Include="HashTableTest3.cs" />
+    <Compile Include="HashTableTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
