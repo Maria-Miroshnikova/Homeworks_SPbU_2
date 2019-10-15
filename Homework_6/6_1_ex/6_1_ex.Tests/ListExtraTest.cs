@@ -7,18 +7,18 @@ namespace _6_1_ex.Tests
     [TestClass]
     public class ListExtraTest
     {
+        private List<int> list;
+
         [TestInitialize]
         public void Initialize()
         {
             list = new List<int>();
             int[] listArray = { 1, 2, 3, 4, 5 };
-            foreach(int number in listArray)
+            foreach (int number in listArray)
             {
                 list.Add(number);
             }
         }
-
-        List<int> list;
 
         [TestMethod]
         public void MapTest()
@@ -70,14 +70,14 @@ namespace _6_1_ex.Tests
         [TestMethod]
         public void ExceptionTests()
         {
-            Assert.ThrowsException<MyVeryOwnNullArgumentException>(() => ListExtra.Map(null, x => x + 2));
-            Assert.ThrowsException<MyVeryOwnNullArgumentException>(() => ListExtra.Map(list, null));
+            Assert.ThrowsException<ArgumentNullException>(() => ListExtra.Map<int, int>(null, x => x + 2));
+            Assert.ThrowsException<ArgumentNullException>(() => ListExtra.Map<int, int>(list, null));
 
-            Assert.ThrowsException<MyVeryOwnNullArgumentException>(() => ListExtra.Filter(null, x => x == 2));
-            Assert.ThrowsException<MyVeryOwnNullArgumentException>(() => ListExtra.Filter(list, null));
+            Assert.ThrowsException<ArgumentNullException>(() => ListExtra.Filter<int>(null, x => x == 2));
+            Assert.ThrowsException<ArgumentNullException>(() => ListExtra.Filter<int>(list, null));
 
-            Assert.ThrowsException<MyVeryOwnNullArgumentException>(() => ListExtra.Fold(null, 0, x => x.element + x.accumulator));
-            Assert.ThrowsException<MyVeryOwnNullArgumentException>(() => ListExtra.Fold(list, 0, null));
+            Assert.ThrowsException<ArgumentNullException>(() => ListExtra.Fold<int, int>(null, 0, x => x.element + x.accumulator));
+            Assert.ThrowsException<ArgumentNullException>(() => ListExtra.Fold<int, int>(list, 0, null));
         }
     }
 }
