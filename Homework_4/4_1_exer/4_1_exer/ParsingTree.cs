@@ -14,6 +14,22 @@ namespace _4_1_exer
         private abstract class ParsingTreeElement
         {
             /// <summary>
+            /// This method returns the value of expression which contains in the sub tree whith root in current node;
+            /// </summary>
+            public abstract int Count();
+
+            /// <summary>
+            /// This method makes the string for print with the expression which contains in the sub tree whith root in current node;
+            /// </summary>
+            public abstract void Print(ref string result);
+        }
+
+        /// <summary>
+        /// This inner class presents a node of parsing tree, which contains an operation (+-/*);
+        /// </summary>
+        private abstract class NodeOperation : ParsingTreeElement
+        {
+            /// <summary>
             /// This property presents left node of current node in the tree;
             /// </summary>
             public ParsingTreeElement LeftNode { get; set; }
@@ -23,52 +39,65 @@ namespace _4_1_exer
             /// </summary>
             public ParsingTreeElement RightNode { get; set; }
 
-            /// <summary>
-            /// This method returns the value of expression which contains in the sub tree whith root in current node;
-            /// </summary>
-            public abstract int Count();
+            public override void Print(ref string result)
+            {
+                result += "( ";
+                LeftNode.Print(ref result);
+                result += $" {OperationSymbol()} ";
+                RightNode.Print(ref result);
+                result += " )";
+            }
+
+            public abstract char OperationSymbol();
         }
 
         /// <summary>
-        /// This inner class presents a node of parsing tree, which contains an operation (+-/*);
+        /// This inner class presents a node of parsing tree, which contains an operation (+);
         /// </summary>
-        private class NodeOperation : ParsingTreeElement
+        private class NodePlus : NodeOperation
         {
-            /// <summary>
-            /// This property presents the operation which contains in current node of tree;
-            /// </summary>
-            public char Operation { get; set; }
+            public override int Count() => LeftNode.Count() + RightNode.Count();
 
-            public NodeOperation(char operation = '\0')
-            {
-                this.Operation = operation;
-            }
+            public override char OperationSymbol() => '+';
+        }
 
+        /// <summary>
+        /// This inner class presents a node of parsing tree, which contains an operation (-);
+        /// </summary>
+        private class NodeMinus : NodeOperation
+        {
+            public override int Count() => LeftNode.Count() - RightNode.Count();
+
+            public override char OperationSymbol() => '-';
+        }
+
+        /// <summary>
+        /// This inner class presents a node of parsing tree, which contains an operation (*);
+        /// </summary>
+        private class NodeMultiplication : NodeOperation
+        {
+            public override int Count() => LeftNode.Count() * RightNode.Count();
+
+            public override char OperationSymbol() => '*';
+        }
+
+        /// <summary>
+        /// This inner class presents a node of parsing tree, which contains an operation (/);
+        /// </summary>
+        private class NodeDivision : NodeOperation
+        {
             public override int Count()
             {
-                if (Operation == '+')
+                int firstOperand = LeftNode.Count();
+                int secondOperand = RightNode.Count();
+                if (secondOperand == 0)
                 {
-                    return LeftNode.Count() + RightNode.Count();
+                    throw new ZeroDivisionException();
                 }
-                else if (Operation == '-')
-                {
-                    return LeftNode.Count() - RightNode.Count();
-                }
-                else if (Operation == '*')
-                {
-                    return LeftNode.Count() * RightNode.Count();
-                }
-                else
-                {
-                    int firstOperand = LeftNode.Count();
-                    int secondOperand = RightNode.Count();
-                    if (secondOperand == 0)
-                    {
-                        throw new ZeroDivisionException();
-                    }
-                    return firstOperand / secondOperand;
-                }
+                return firstOperand / secondOperand;
             }
+
+            public override char OperationSymbol() => '/';
         }
 
         /// <summary>
@@ -86,15 +115,14 @@ namespace _4_1_exer
                 this.Value = value;
             }
 
-            public override int Count()
-            {
-                return Value;
-            }
+            public override int Count() => Value;
+
+            public override void Print(ref string result) => result += Value.ToString();
         }
 
         private string data;
-        private ParsingTreeElement currentNode;
-        private ParsingTreeElement head;
+        private NodeOperation currentNode;
+        private NodeOperation head;
         private int indexStr;
 
         public ParsingTree(string data)
@@ -119,12 +147,10 @@ namespace _4_1_exer
                 if (currentNode.LeftNode == null)
                 {
                     currentNode.LeftNode = new NodeNumber(data[indexStr] - '0');
-   //                 currentNode = currentNode.LeftNode;
                 }
                 else
                 {
                     currentNode.RightNode = new NodeNumber(data[indexStr] - '0');
- //                   currentNode = currentNode.RightNode;
                     isRightNodeNull = false;
                     return isRightNodeNull;
                 }
@@ -134,6 +160,26 @@ namespace _4_1_exer
                 }
             }
             return true;
+        }
+
+        private NodeOperation AddOperation(char operation)
+        {
+            if (operation == '+')
+            {
+                 return new NodePlus();
+            }
+            else if (operation == '-')
+            {
+                return new NodeMinus();
+            }
+            else if (operation == '*')
+            {
+                return new NodeMultiplication();
+            }
+            else
+            {
+                return new NodeDivision();
+            }
         }
 
         private void MakeParsingTree()
@@ -152,24 +198,23 @@ namespace _4_1_exer
             {
                 if (IsEmpty)
                 {
-                    currentNode = new NodeOperation(data[indexStr]);
+                    currentNode = AddOperation(data[indexStr]);
                     head = currentNode;
                     MakeParsingTree();
-
                 }
                 else if (currentNode.LeftNode == null)
                 {
-                    currentNode.LeftNode = new NodeOperation(data[indexStr]);
+                    currentNode.LeftNode = AddOperation(data[indexStr]);
                     var oldNode = currentNode;
-                    currentNode = currentNode.LeftNode;
+                    currentNode = (NodeOperation)currentNode.LeftNode;
                     MakeParsingTree();
                     currentNode = oldNode;
                 }
                 else
                 {
-                    currentNode.RightNode = new NodeOperation(data[indexStr]);
+                    currentNode.RightNode = AddOperation(data[indexStr]);
                     var oldNode = currentNode;
-                    currentNode = currentNode.RightNode;
+                    currentNode = (NodeOperation)currentNode.RightNode;
                     MakeParsingTree();
                     currentNode = oldNode;
                     return;
@@ -189,9 +234,18 @@ namespace _4_1_exer
         }
 
         /// <summary>
+        /// This method returns the string which contains the expression of the tree;
+        /// </summary>
+        public string Print()
+        {
+            string result = "";
+            head.Print(ref result);
+            return result;
+        }
+
+        /// <summary>
         /// This method returns the value of expression which contains in parsing tree;
         /// </summary>
-        /// <returns></returns>
         public int CountExpression()
         {
             MakeParsingTree();
