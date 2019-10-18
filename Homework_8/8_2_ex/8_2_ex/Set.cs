@@ -8,7 +8,6 @@ namespace _8_2_ex
     /// <summary>
     /// This class presents the generis set (AVL-tree), made of SetElements (inner class).
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class GenericSet<T> : ISet<T>
     {
         /// <summary>
@@ -50,48 +49,6 @@ namespace _8_2_ex
         /// </summary>
         public bool IsReadOnly => false;
 
-        private void FindElementByIndex(ref int currentIndex, int findIndex, ref SetElement result, SetElement currentElement)
-        {
-            if (currentElement.LeftChild != null)
-            {
-                FindElementByIndex(ref currentIndex, findIndex, ref result, currentElement.LeftChild);
-            }
-
-            if (currentIndex > findIndex)
-            {
-                return;
-            }
-
-            if (currentIndex == findIndex)
-            {
-                result = currentElement;
-            }
-
-            ++currentIndex;
-
-            if (currentElement.RightChild != null)
-            {
-                FindElementByIndex(ref currentIndex, findIndex, ref result, currentElement.RightChild);
-            }
-        }
-
-        private T this[int index]
-        {
-            get
-            {
-                if ((index < 0) || (index >= Count))
-                {
-                    throw new IndexOutOfSetException();
-                }
-
-                SetElement result = null;
-                int position = 0;
-                FindElementByIndex(ref position, index, ref result, head);
-
-                return result.Data;
-            }
-        }
-
         /// <summary>
         /// This method checks if the set contains given element.
         /// </summary>
@@ -117,7 +74,7 @@ namespace _8_2_ex
                         currentElement = currentElement.LeftChild;
                     }
                 }
-                else if (comparer.Compare(currentElement.Data, data) <0)
+                else if (comparer.Compare(currentElement.Data, data) < 0)
                 {
                     if (currentElement.RightChild == null)
                     {
@@ -188,9 +145,8 @@ namespace _8_2_ex
         }
 
         /// <summary>
-        /// Don`t know what is it???
+        /// Need to be here.
         /// </summary>
-        /// <param name="data"></param>
         void ICollection<T>.Add(T data)
         {
             Add(data);
@@ -216,6 +172,16 @@ namespace _8_2_ex
         /// </summary>
         public void CopyTo(T[] outputArray, int indexOutput)
         {            
+            if (outputArray == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (outputArray.Length - indexOutput < Count)
+            {
+                throw new NotEnoughLengthOfOutputArray();
+            }
+
             if (IsEmpty)
             {
                 return;
@@ -228,15 +194,7 @@ namespace _8_2_ex
 
         private void DeleteSimpleCase(SetElement element, SetElement elementParent)
         {
-            bool isLeftChild;
-            if (elementParent.LeftChild == element)
-            {
-                isLeftChild = true;
-            }
-            else
-            {
-                isLeftChild = false;
-            }
+            bool isLeftChild = (elementParent.LeftChild == element);
 
             if (elementParent == null)
             {
@@ -284,14 +242,17 @@ namespace _8_2_ex
 
         private SetElement FindReplacement(SetElement element)
         {
-            if (element.RightChild != null)
+            SetElement replacement = element;
+
+            while (replacement.RightChild != null)
             {
-                return FindReplacement(element.RightChild);
+                replacement = replacement.RightChild;
             }
-            return element;
+
+            return replacement;
         }
 
-        private SetElement FindParentForExistElement(SetElement element)
+        private SetElement FindParentForExistingElement(SetElement element)
         {
             if (element == head)
             {
@@ -331,14 +292,14 @@ namespace _8_2_ex
                 if ((currentElement.LeftChild != null) && (currentElement.RightChild != null)) // удаление элемента с двумя сыновьями
                 {
                     var replacement = FindReplacement(currentElement.LeftChild);
-                    var replacementParent = FindParentForExistElement(replacement);
+                    var replacementParent = FindParentForExistingElement(replacement);
 
                     currentElement.Data = replacement.Data; // копирует значение заменителя в удаляемый элемент
                     DeleteSimpleCase(replacement, replacementParent);      // удаляет заменитель
                 }
                 else
                 {
-                    DeleteSimpleCase(currentElement, FindParentForExistElement(currentElement));
+                    DeleteSimpleCase(currentElement, FindParentForExistingElement(currentElement));
                 }
                 return true;
             }
@@ -385,7 +346,12 @@ namespace _8_2_ex
         /// </summary>
         public void UnionWith(IEnumerable<T> other)
         {
-            foreach(T element in other)
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            foreach (T element in other)
             {
                 if (!Contains(element))
                 {
@@ -397,13 +363,17 @@ namespace _8_2_ex
         /// <summary>
         /// This method deletes elements of the set, which are not contained in given set, from the set. 
         /// </summary>
-        /// <param name="other"></param>
         public void IntersectWith(IEnumerable<T> other)
         {
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             var setElements = new T[Count];
             CopyTo(setElements, 0);
 
-            foreach(T element in setElements)
+            foreach (T element in setElements)
             {
                 if (!other.Contains(element))
                 {
@@ -415,10 +385,14 @@ namespace _8_2_ex
         /// <summary>
         /// This method deletes elements of the set, which are contained in given set, from the set.
         /// </summary>
-        /// <param name="other"></param>
         public void ExceptWith(IEnumerable<T> other)
         {
-            foreach(T element in other)
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            foreach (T element in other)
             {
                 Remove(element);
             }
@@ -430,7 +404,12 @@ namespace _8_2_ex
         /// </summary>
         public void SymmetricExceptWith(IEnumerable<T> other)
         {
-            foreach(T element in other)
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            foreach (T element in other)
             {
                 if (Contains(element))
                 {
@@ -448,6 +427,11 @@ namespace _8_2_ex
         /// </summary>
         public bool IsSubsetOf(IEnumerable<T> other)
         {
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             foreach (T element in this)
             {
                 if (!other.Contains(element))
@@ -463,6 +447,11 @@ namespace _8_2_ex
         /// </summary>
         public bool IsSupersetOf(IEnumerable<T> other)
         {
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             foreach (T element in other)
             {
                 if (!Contains(element))
@@ -478,6 +467,11 @@ namespace _8_2_ex
         /// </summary>
         public bool IsProperSupersetOf(IEnumerable<T> other)
         {
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             return (IsSupersetOf(other)) && (Count > other.Count());
         }
 
@@ -486,6 +480,11 @@ namespace _8_2_ex
         /// </summary>
         public bool IsProperSubsetOf(IEnumerable<T> other)
         {
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             return (IsSubsetOf(other)) && (Count < other.Count());
         }
 
@@ -494,7 +493,12 @@ namespace _8_2_ex
         /// </summary>
         public bool Overlaps(IEnumerable<T> other)
         {
-            foreach(T element in other)
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            foreach (T element in other)
             {
                 if (Contains(element))
                 {
@@ -509,6 +513,11 @@ namespace _8_2_ex
         /// </summary>
         public bool SetEquals(IEnumerable<T> other)
         {
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             return (IsSubsetOf(other)) && (Count == other.Count());
         }
 
@@ -528,12 +537,15 @@ namespace _8_2_ex
         private class SetEnumerator<T> : IEnumerator<T>
         {
             private GenericSet<T> set;
-
-            private int position = -1;
+            private int currentElementIndex;
+            private T[] setArray;
 
             public SetEnumerator(GenericSet<T> set)
             {
                 this.set = set;
+                setArray = new T[set.Count];
+                set.CopyTo(setArray, 0);
+                currentElementIndex = -1;
             }
 
             /// <summary>
@@ -543,12 +555,7 @@ namespace _8_2_ex
             {
                 get
                 {
-                    if ((position < 0) || (position >= set.Count))
-                    {
-                        throw new IndexOutOfRangeException();
-                    }
-
-                    return set[position];
+                    return setArray[currentElementIndex];
                 }
             }
 
@@ -557,22 +564,22 @@ namespace _8_2_ex
             /// </summary>
             public bool MoveNext()
             {
-                if ((position >= set.Count - 1))
+                if (currentElementIndex == setArray.Length - 1)
                 {
                     return false;
                 }
 
-                ++position;
+                ++currentElementIndex;
                 return true;
             }
 
             /// <summary>
-            /// Returns to the pre-beginning of set
+            /// Returns to the beginning of set
             /// </summary>
-            public void Reset() => position = -1;
+            public void Reset() => currentElementIndex = -1;
 
             /// <summary>
-            /// Need to be here
+            /// Destructor
             /// </summary>
             public void Dispose()
             {
@@ -581,7 +588,7 @@ namespace _8_2_ex
             /// <summary>
             /// Need to be here
             /// </summary>
-            object IEnumerator.Current => throw new NotImplementedException();
+            object IEnumerator.Current => this.Current;
         }
 
     }

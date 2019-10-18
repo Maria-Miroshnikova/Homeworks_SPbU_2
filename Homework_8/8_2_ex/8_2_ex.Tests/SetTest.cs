@@ -7,6 +7,8 @@ namespace _8_2_ex.Tests
     [TestClass]
     public class SetTest
     {
+        private GenericSet<int> set;
+
         [TestInitialize]
         public void Initialize()
         {
@@ -20,8 +22,6 @@ namespace _8_2_ex.Tests
             }
         }
 
-        GenericSet<int> set;
-
         [TestMethod]
         public void IsEmptySet()
         {
@@ -33,12 +33,11 @@ namespace _8_2_ex.Tests
         {
             int[] testAnswer = { -2, -1, 0, 1, 4, 6, 10 };
 
-            var copyArray = new int[set.Count];
-            set.CopyTo(copyArray, 0);
-
-            for (int i = 0; i < copyArray.Length; ++i)
+            int i = 0;
+            foreach (int element in set)
             {
-                Assert.AreEqual(testAnswer[i], copyArray[i]);
+                Assert.AreEqual(testAnswer[i], element);
+                ++i;
             }
         }
 
@@ -65,12 +64,11 @@ namespace _8_2_ex.Tests
                 set.Remove(element);
             }
 
-            var elementsAfterRemove = new int[testAnswer.Length];
-            set.CopyTo(elementsAfterRemove, 0);
-
-            for (int i = 0; i < testAnswer.Length; ++i)
+            int i = 0;
+            foreach (int element in set)
             {
-                Assert.AreEqual(testAnswer[i], elementsAfterRemove[i]);
+                Assert.AreEqual(testAnswer[i], element);
+                ++i;
             }
         }
 
@@ -82,6 +80,7 @@ namespace _8_2_ex.Tests
             Assert.IsTrue(set.IsEmpty);
         }
 
+        // ????????
         [TestMethod]
         public void EnumeratorTest()
         {
@@ -105,12 +104,12 @@ namespace _8_2_ex.Tests
 
             set.UnionWith(unionSet);
 
-            var setElements = new int[set.Count];
-            set.CopyTo(setElements, 0);
+            int i = 0;
 
-            for (int i = 0; i < setElements.Length; ++i)
+            foreach (int element in set)
             {
-                Assert.AreEqual(testAnswer[i], setElements[i]);
+                Assert.AreEqual(testAnswer[i], element);
+                ++i;
             }
         }
 
@@ -122,12 +121,11 @@ namespace _8_2_ex.Tests
 
             set.IntersectWith(intersectSet);
 
-            var setElements = new int[set.Count];
-            set.CopyTo(setElements, 0);
-
-            for (int i = 0; i < setElements.Length; ++i)
+            int i = 0;
+            foreach (int element in set)
             {
-                Assert.AreEqual(testAnswer[i], setElements[i]);
+                Assert.AreEqual(testAnswer[i], element);
+                ++i;
             }
         }
 
@@ -139,12 +137,11 @@ namespace _8_2_ex.Tests
 
             set.ExceptWith(exceptSet);
 
-            var setElements = new int[set.Count];
-            set.CopyTo(setElements, 0);
-
-            for (int i = 0; i < setElements.Length; ++i)
+            int i = 0;
+            foreach (int element in set)
             {
-                Assert.AreEqual(testAnswer[i], setElements[i]);
+                Assert.AreEqual(testAnswer[i], element);
+                ++i;
             }
         }
 
@@ -156,12 +153,11 @@ namespace _8_2_ex.Tests
 
             set.SymmetricExceptWith(symmetricExceptSet);
 
-            var setElements = new int[set.Count];
-            set.CopyTo(setElements, 0);
-
-            for (int i = 0; i < setElements.Length; ++i)
+            int i = 0;
+            foreach (int element in set)
             {
-                Assert.AreEqual(testAnswer[i], setElements[i]);
+                Assert.AreEqual(testAnswer[i], element);
+                ++i;
             }
         }
 
@@ -229,5 +225,23 @@ namespace _8_2_ex.Tests
             Assert.IsFalse(set.SetEquals(set4));
         }
 
+        [TestMethod]
+        public void ExceptionsTest()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => set.CopyTo(null, 0));
+            Assert.ThrowsException<NotEnoughLengthOfOutputArray>(() => set.CopyTo(new int[set.Count], 1));
+            Assert.ThrowsException<NotEnoughLengthOfOutputArray>(() => set.CopyTo(new int[set.Count -1], 0));
+
+            Assert.ThrowsException<ArgumentNullException>(() => set.UnionWith(null));
+            Assert.ThrowsException<ArgumentNullException>(() => set.IntersectWith(null));
+            Assert.ThrowsException<ArgumentNullException>(() => set.ExceptWith(null));
+            Assert.ThrowsException<ArgumentNullException>(() => set.SymmetricExceptWith(null));
+            Assert.ThrowsException<ArgumentNullException>(() => set.IsSubsetOf(null));
+            Assert.ThrowsException<ArgumentNullException>(() => set.IsSupersetOf(null));
+            Assert.ThrowsException<ArgumentNullException>(() => set.IsProperSupersetOf(null));
+            Assert.ThrowsException<ArgumentNullException>(() => set.IsProperSubsetOf(null));
+            Assert.ThrowsException<ArgumentNullException>(() => set.Overlaps(null));
+            Assert.ThrowsException<ArgumentNullException>(() => set.SetEquals(null));
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace _8_2_ex
 {
     /// <summary>
-    /// This class presents the comoparer for integers.
+    /// This class presents the comparer for integers.
     /// </summary>
     public class ComparerInt : IComparer<int>
     {
