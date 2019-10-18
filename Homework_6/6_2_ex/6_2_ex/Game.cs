@@ -3,7 +3,7 @@
 namespace _6_2_ex
 {
     /// <summary>
-    /// This class presents the game: labytinth with character, operated by keys left, right, up and down;
+    /// This class presents the game: labyrinth with character, operated by keys left, right, up and down;
     /// </summary>
     public class Game
     {
@@ -15,9 +15,9 @@ namespace _6_2_ex
             /// <summary>
             /// The position of character on the game map;
             /// </summary>
-            public (int x, int y) Position { get; set; }
+            public (int y, int x) Position { get; set; }
 
-            public GameCharacter((int x, int y) startPosition)
+            public GameCharacter((int y, int x) startPosition)
             {
                 this.Position = startPosition;
             }
@@ -51,7 +51,7 @@ namespace _6_2_ex
             /// <summary>
             /// Finds character '@' on the map and throws exception if there is no '@';
             /// </summary>
-            public (int x, int y) FindCharacter()
+            private (int y, int x) FindCharacter()
             {
                 for (int i = 0; i < Map.GetLength(0); ++i)
                 {
@@ -66,20 +66,20 @@ namespace _6_2_ex
                 throw new NoCharacterException();
             }
 
-            private bool IsCoordinatesCorrect(int x, int y) => (x < Map.GetLength(0)) && (y < Map.GetLength(1)) && (x * y >= 0);
+            private bool IsCoordinatesCorrect(int y, int x) => (y < Map.GetLength(0)) && (x < Map.GetLength(1)) && (x * y >= 0);
 
-            private bool IsStepCorrect(int x, int y) => IsCoordinatesCorrect(x, y) && (Map[x, y] == ' ');
+            private bool IsStepCorrect(int y, int x) => IsCoordinatesCorrect(y, x) && (Map[y, x] == ' ');
 
             /// <summary>
             /// Replaces game character`s position on the map with given;
             /// </summary>
-            public void MoveCharacter(int dX, int dY)
+            public void MoveCharacter(int dY, int dX)
             {
-                (int x, int y) newPosition = (Character.Position.x + dX, Character.Position.y + dY);
-                if (IsCoordinatesCorrect(newPosition.x, newPosition.y) && IsStepCorrect(newPosition.x, newPosition.y))
+                (int y, int x) newPosition = (Character.Position.y + dY, Character.Position.x + dX);
+                if (IsStepCorrect(newPosition.y, newPosition.x))
                 {
-                    Map[newPosition.x, newPosition.y] = '@';
-                    Map[Character.Position.x, Character.Position.y] = ' ';
+                    Map[newPosition.y, newPosition.x] = '@';
+                    Map[Character.Position.y, Character.Position.x] = ' ';
                     Character.Position = newPosition;
                 }
             }
@@ -89,7 +89,7 @@ namespace _6_2_ex
             /// </summary>
             public void Draw()
             {
-                Console.SetCursorPosition(0, 3);
+                Console.SetCursorPosition(0, 0);
 
                 for (var i = 0; i < Map.GetLength(0); ++i)
                 {
@@ -100,6 +100,21 @@ namespace _6_2_ex
                     Console.WriteLine();
                 }
             }
+
+            /// <summary>
+            /// Prints the step of game character on the console;
+            /// </summary>
+            public void DrawStep((int y, int x) oldPosition, (int y, int x) newPosition)
+            {
+                if ((oldPosition.x == newPosition.x) && (oldPosition.y == newPosition.y))
+                {
+                    return;
+                }
+                Console.SetCursorPosition(oldPosition.x, oldPosition.y);
+                Console.Write(Map[oldPosition.y, oldPosition.x]);
+                Console.SetCursorPosition(newPosition.x, newPosition.y);
+                Console.Write(Map[newPosition.y, newPosition.x]);
+            }
         }
 
         /// <summary>
@@ -107,26 +122,19 @@ namespace _6_2_ex
         /// </summary>
         private class GameEventHandler
         {
-            public delegate void GameEvent();
+            public delegate void GameMovingEvent();
 
-            public event GameEvent LeftHandler;
-            public event GameEvent RightHandler;
-            public event GameEvent UpHandler;
-            public event GameEvent DownHandler;
-            public event GameEvent DrawHandler;
+            public event GameMovingEvent LeftHandler;
+            public event GameMovingEvent RightHandler;
+            public event GameMovingEvent UpHandler;
+            public event GameMovingEvent DownHandler;
 
-            public GameEventHandler(GameEvent left, GameEvent right, GameEvent up, GameEvent down, GameEvent draw)
+            public GameEventHandler(GameMovingEvent left, GameMovingEvent right, GameMovingEvent up, GameMovingEvent down)
             {
                 LeftHandler += left;
                 RightHandler += right;
                 UpHandler += up;
                 DownHandler += down;
-
-                DrawHandler += draw;
-                LeftHandler += draw;
-                RightHandler += draw;
-                UpHandler += draw;
-                DownHandler += draw;
             }
 
             /// <summary>
@@ -134,8 +142,6 @@ namespace _6_2_ex
             /// </summary>
             public void Run()
             {
-                DrawHandler();
-
                 while (true)
                 {
                     var action = Console.ReadKey();
@@ -164,37 +170,33 @@ namespace _6_2_ex
         private GameMap map;
         private GameEventHandler eventObserver;
 
+        private void Move(int y, int x)
+        {
+            (int y, int x) oldPosition = map.Character.Position;
+            map.MoveCharacter(y, x);
+            (int y, int x) newPosition = map.Character.Position;
+            map.DrawStep(oldPosition, newPosition);
+        }
+
         /// <summary>
         /// Moves game character left;
         /// </summary>
-        public void OnLeft()
-        {
-            map.MoveCharacter(0, -1);
-        }
+        public void OnLeft() => Move(0, -1);
 
         /// <summary>
         /// Moves game characher right;
         /// </summary>
-        public void OnRight()
-        {
-            map.MoveCharacter(0, 1);
-        }
+        public void OnRight() => Move(0, 1);
 
         /// <summary>
         /// Moves game character up;
         /// </summary>
-        public void OnUp()
-        {
-            map.MoveCharacter(-1, 0);
-        }
+        public void OnUp() => Move(-1, 0);
 
         /// <summary>
         /// Moves game character down;
         /// </summary>
-        public void OnDown()
-        {
-            map.MoveCharacter(1, 0);
-        }
+        public void OnDown() => Move(1, 0);
 
         /// <summary>
         /// Stars the game (creates map with character on it and runs the observing of pressing keys);
@@ -202,7 +204,8 @@ namespace _6_2_ex
         public void Start(string fileName)
         {
             map = new GameMap(fileName);
-            eventObserver = new GameEventHandler(OnLeft, OnRight, OnUp, OnDown, map.Draw);
+            eventObserver = new GameEventHandler(OnLeft, OnRight, OnUp, OnDown);
+            map.Draw();
             eventObserver.Run();
         }
     }

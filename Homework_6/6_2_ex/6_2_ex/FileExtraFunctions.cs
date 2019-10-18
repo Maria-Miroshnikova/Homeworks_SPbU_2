@@ -5,7 +5,7 @@ using System.IO;
 namespace _6_2_ex
 {
     /// <summary>
-    /// This class presetns extra functions for working with files;
+    /// This class presents extra functions for working with files;
     /// </summary>
     public static class FileExtraFunctions
     {
