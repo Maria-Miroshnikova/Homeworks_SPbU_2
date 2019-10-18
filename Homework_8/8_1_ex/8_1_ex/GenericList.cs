@@ -25,11 +25,7 @@ namespace ListNameSpace
         }
 
         private ListElement head;
-        private int size;
-
-        public GenericList()
-        {
-        }
+        private ListElement tail;
 
         /// <summary>
         /// This property returns if the list is empty;
@@ -39,10 +35,10 @@ namespace ListNameSpace
         /// <summary>
         /// This property returns the count of elements in the list;
         /// </summary>
-        public int Count => size;
+        public int Count { get; set; }
 
         /// <summary>
-        /// Don`t know what is it???
+        /// %his property shows that we can get and set elements to (from) list; 
         /// </summary>
         public bool IsReadOnly => false;
 
@@ -53,7 +49,7 @@ namespace ListNameSpace
         {
             get
             {
-                if ((index > size - 1) || (index < 0))
+                if ((index > Count - 1) || (index < 0))
                 {
                     throw new IndexOutOfListException();
                 }
@@ -68,7 +64,7 @@ namespace ListNameSpace
 
             set
             {
-                if ((index > size - 1) || (index < 0))
+                if ((index > Count - 1) || (index < 0))
                 {
                     throw new IndexOutOfListException();
                 }
@@ -102,12 +98,14 @@ namespace ListNameSpace
         /// <returns> the index of the element in list or -1 if it doesn`t present.</returns>
         public int IndexOf(T data)
         {
-            for (int i = 0; i < size; ++i)
+            int i = 0;
+            foreach (T element in this)
             {
-                if (this[i].Equals(data))
+                if (element.Equals(data))
                 {
                     return i;
                 }
+                ++i;
             }
 
             return -1;
@@ -119,9 +117,9 @@ namespace ListNameSpace
         /// <param name="data"> The element which presence you want to check.</param>
         public bool Contains(T data)
         {
-            for (int i = 0; i < size; ++i)
+            foreach (T element in this)
             {
-                if (this[i].Equals(data))
+                if (element.Equals(data))
                 {
                     return true;
                 }
@@ -135,21 +133,17 @@ namespace ListNameSpace
         public void Add(T data)
         {
             var newElement = new ListElement(data, null);
-            ++this.size;
+            ++Count;
 
             if (IsEmpty)
             {
                 head = newElement;
+                tail = head;
                 return;
             }
 
-            ListElement element = head;
-            while (element.Next != null)
-            {
-                element = element.Next;
-            }
-
-            element.Next = newElement;
+            tail.Next = newElement;
+            tail = newElement;
         }
 
         /// <summary>
@@ -157,13 +151,13 @@ namespace ListNameSpace
         /// </summary>
         public void Insert(int index, T data)
         {
-            if ((index > size - 1) || (index < 0))
+            if ((index > Count - 1) || (index < 0))
             {
                 throw new IndexOutOfListException();
             }
 
             var newElement = new ListElement(data, null);
-            ++this.size;
+            ++Count;
 
             if (index == 0)
             {
@@ -183,12 +177,12 @@ namespace ListNameSpace
         /// </summary>
         public void CopyTo(T[] outputList, int index)
         {
-            if ((index > size - 1) || (index < 0))
+            if ((index > Count - 1) || (index < 0))
             {
                 throw new IndexOutOfListException();
             }
 
-            for (int i = 0; i < size - index; ++i)
+            for (int i = 0; i < Count - index; ++i)
             {
                 outputList[i] = this[i + index];
             }
@@ -208,15 +202,25 @@ namespace ListNameSpace
 
             if (index == 0)
             {
+                if (tail == head)
+                {
+                    tail = null;
+                }
+
                 head = head.Next;
             }
             else
             {
                 var element = FindPrevious(index);
                 element.Next = element.Next.Next;
+
+                if (index == Count - 1)
+                {
+                    tail = element;
+                }
             }
 
-            --this.size;
+            --Count;
 
             return true;
         }
@@ -226,21 +230,34 @@ namespace ListNameSpace
         /// </summary>
         public void RemoveAt(int index)
         {
-            if ((index > size - 1) || (index < 0))
+            if ((index > Count - 1) || (index < 0))
             {
                 throw new IndexOutOfListException();
             }
 
-            --this.size;
-
             if (index == 0)
             {
-                this.head = head.Next;
+                if (tail == head)
+                {
+                    tail = null;
+                }
+
+                head = head.Next;
+
+                --Count;
+
                 return;
             }
 
             ListElement element = FindPrevious(index);
             element.Next = element.Next.Next;
+
+            if (index == Count - 1)
+            {
+                tail = element;
+            }
+
+            --Count;
         }
 
         /// <summary>
@@ -248,8 +265,9 @@ namespace ListNameSpace
         /// </summary>
         public void Clear()
         {
-            this.head = null;
-            this.size = 0;
+            head = null;
+            tail = null;
+            Count = 0;
         }
 
         /// <summary>
@@ -258,7 +276,7 @@ namespace ListNameSpace
         private class ListEnumerator : IEnumerator<T>
         {
             private GenericList<T> list;
-            private int position = -1;
+            private ListElement currentElement;
 
             public ListEnumerator(GenericList<T> list)
             {
@@ -272,40 +290,39 @@ namespace ListNameSpace
             {
                 get
                 {
-                    if ((position >= list.Count) || (position < 0))
-                    {
-                        throw new IndexOutOfListException();
-                    }
-
-                    return list[position];
+                    return currentElement.Data;
                 }
                 set
                 {
-                    if ((position >= list.Count) || (position < 0))
-                    {
-                        throw new IndexOutOfListException();
-                    }
-
-                    list[position] = value;
+                    currentElement.Data = value;
                 }
             }
 
             /// <summary>
-            /// Don`t know what is it???
+            /// Vestiges of the past
             /// </summary>
-            object IEnumerator.Current => throw new NotImplementedException();
+            object IEnumerator.Current => this.Current;
 
             /// <summary>
             /// This method moves to next element of the list, returning true, or returns false, if current element is the last; 
             /// </summary>
             public bool MoveNext()
             {
-                if (position >= list.Count - 1)
+                if (currentElement == null)
+                {
+                    currentElement = list.head;
+                    return true;
+                }
+
+                if (currentElement.Next == null)
                 {
                     return false;
                 }
+                else
+                {
+                    currentElement = currentElement.Next;
+                }
 
-                ++position;
                 return true;
             }
 
@@ -314,16 +331,17 @@ namespace ListNameSpace
             /// </summary>
             public void Reset()
             {
-                position = -1;
+                currentElement = null;
             }
 
             /// <summary>
-            /// Don`t know what is it???
+            /// Destructor 
             /// </summary>
             public void Dispose()
             {
             }
         }
+
         public IEnumerator<T> GetEnumerator() => new ListEnumerator(this);
 
         IEnumerator IEnumerable.GetEnumerator() => new ListEnumerator(this);

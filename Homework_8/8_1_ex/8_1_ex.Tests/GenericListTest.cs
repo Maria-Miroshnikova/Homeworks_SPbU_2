@@ -219,10 +219,8 @@ namespace ListNameSpace.Tests
         [TestMethod]
         public void RemoveAtTest()
         {
-            int[] indexRemoveInt = { 0, 0, 1, 1 };
+            int[] indexRemoveInt = { 0, 0, 1, 1, 0 };
             int[] indexRemoveStr = { 0, 2, 1, 0 };
-
-            int[] testAnswerInt = { 5 };
             
             for (int i = 0; i < indexRemoveInt.Length; ++i)
             {
@@ -233,10 +231,7 @@ namespace ListNameSpace.Tests
                 testListStr.RemoveAt(indexRemoveStr[i]);
             }
 
-            for (int i = 0; i < testListInt.Count; ++i)
-            {
-                Assert.AreEqual(testAnswerInt[i], testListInt[i]);
-            }
+            Assert.IsTrue(testListInt.IsEmpty);
 
             Assert.IsTrue(testListStr.IsEmpty);
         }
