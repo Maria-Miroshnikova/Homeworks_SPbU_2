@@ -163,25 +163,25 @@ namespace ListNameSpace.Tests
         [TestMethod]
         public void CopyToTest()
         {
-            int[] testAnswerInt = { 5, 4, 3 };
-            string[] testAnswerStr = { "c" };
+            int indexCopy = 2;
 
-            int indexCopyInt = testListInt.Count - testAnswerInt.Length;
-            int indexCopyStr = testListStr.Count - testAnswerStr.Length;
+            var outputListInt = new int[testListInt.Count + indexCopy];
+            var outputListStr = new string[testListStr.Count + indexCopy];
 
-            var outputListInt = new int[testAnswerInt.Length];
-            var outputListStr = new string[testAnswerStr.Length];
+            testListInt.CopyTo(outputListInt, indexCopy);
+            testListStr.CopyTo(outputListStr, indexCopy);
 
-            testListInt.CopyTo(outputListInt, indexCopyInt);
-            testListStr.CopyTo(outputListStr, indexCopyStr);
-
-            for (int i = 0; i < testAnswerInt.Length; ++i)
+            int i = indexCopy;
+            foreach (int element in testListInt)
             {
-                Assert.AreEqual(testAnswerInt[i], outputListInt[i]);
+                Assert.AreEqual(element, outputListInt[i]);
+                ++i;
             }
-            for (int i = 0; i < testAnswerStr.Length; ++i)
+            i = indexCopy;
+            foreach (string element in testListStr)
             {
-                Assert.AreEqual(testAnswerStr[i], outputListStr[i]);
+                Assert.AreEqual(element, outputListStr[i]);
+                ++i;
             }
         }
 
@@ -290,10 +290,12 @@ namespace ListNameSpace.Tests
             Assert.ThrowsException<IndexOutOfListException>(() => testListInt.RemoveAt(testListInt.Count));
             Assert.ThrowsException<IndexOutOfListException>(() => testListStr.RemoveAt(testListStr.Count));
 
-            Assert.ThrowsException<IndexOutOfListException>(() => testListInt.CopyTo(null, -1));
-            Assert.ThrowsException<IndexOutOfListException>(() => testListStr.CopyTo(null, -1));
-            Assert.ThrowsException<IndexOutOfListException>(() => testListInt.CopyTo(null, testListInt.Count));
-            Assert.ThrowsException<IndexOutOfListException>(() => testListStr.CopyTo(null, testListStr.Count));
+            Assert.ThrowsException<ArgumentNullException>(() => testListInt.CopyTo(null, -1));
+            Assert.ThrowsException<ArgumentNullException>(() => testListStr.CopyTo(null, -1));
+            Assert.ThrowsException<NotEnoughLengthOfOutputArrayException>(() => testListInt.CopyTo(new int[testListInt.Count - 1], 0));
+            Assert.ThrowsException<NotEnoughLengthOfOutputArrayException>(() => testListStr.CopyTo(new string[testListStr.Count - 1], 0));
+            Assert.ThrowsException<NotEnoughLengthOfOutputArrayException>(() => testListInt.CopyTo(new int[testListInt.Count], 1));
+            Assert.ThrowsException<NotEnoughLengthOfOutputArrayException>(() => testListStr.CopyTo(new string[testListStr.Count], 1));
         }
     }
 }

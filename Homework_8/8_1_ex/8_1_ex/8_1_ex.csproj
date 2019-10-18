@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="IndexOutOfListException.cs" />
     <Compile Include="GenericList.cs" />
+    <Compile Include="NotEnoughLengthOfOutputArrayException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -175,16 +175,28 @@ namespace ListNameSpace
         /// <summary>
         /// The method which returns all the elements from list in array;
         /// </summary>
-        public void CopyTo(T[] outputList, int index)
+        public void CopyTo(T[] outputArray, int indexOutput)
         {
-            if ((index > Count - 1) || (index < 0))
+            if (outputArray == null)
             {
-                throw new IndexOutOfListException();
+                throw new ArgumentNullException();
             }
 
-            for (int i = 0; i < Count - index; ++i)
+            if (outputArray.Length - indexOutput < Count)
             {
-                outputList[i] = this[i + index];
+                throw new NotEnoughLengthOfOutputArrayException();
+            }
+
+            if (IsEmpty)
+            {
+                return;
+            }
+
+            int i = indexOutput;
+            foreach (T element in this)
+            {
+                outputArray[i] = element;
+                ++i;
             }
         }
 
