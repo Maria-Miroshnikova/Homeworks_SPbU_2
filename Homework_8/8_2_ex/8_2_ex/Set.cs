@@ -179,7 +179,7 @@ namespace _8_2_ex
 
             if (outputArray.Length - indexOutput < Count)
             {
-                throw new NotEnoughLengthOfOutputArray();
+                throw new NotEnoughLengthOfOutputArrayException();
             }
 
             if (IsEmpty)

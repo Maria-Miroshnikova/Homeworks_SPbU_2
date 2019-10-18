@@ -228,8 +228,8 @@ namespace _8_2_ex.Tests
         public void ExceptionsTest()
         {
             Assert.ThrowsException<ArgumentNullException>(() => set.CopyTo(null, 0));
-            Assert.ThrowsException<NotEnoughLengthOfOutputArray>(() => set.CopyTo(new int[set.Count], 1));
-            Assert.ThrowsException<NotEnoughLengthOfOutputArray>(() => set.CopyTo(new int[set.Count -1], 0));
+            Assert.ThrowsException<NotEnoughLengthOfOutputArrayException>(() => set.CopyTo(new int[set.Count], 1));
+            Assert.ThrowsException<NotEnoughLengthOfOutputArrayException>(() => set.CopyTo(new int[set.Count -1], 0));
 
             Assert.ThrowsException<ArgumentNullException>(() => set.UnionWith(null));
             Assert.ThrowsException<ArgumentNullException>(() => set.IntersectWith(null));

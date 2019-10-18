@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="ComparerInt.cs" />
     <Compile Include="IndexOutOfSetException.cs" />
-    <Compile Include="NotEnoughLengthOfOutputArray.cs" />
+    <Compile Include="NotEnoughLengthOfOutputArrayException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Set.cs" />
