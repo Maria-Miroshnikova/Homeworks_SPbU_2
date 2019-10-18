@@ -105,7 +105,6 @@ namespace _8_2_ex.Tests
             set.UnionWith(unionSet);
 
             int i = 0;
-
             foreach (int element in set)
             {
                 Assert.AreEqual(testAnswer[i], element);
