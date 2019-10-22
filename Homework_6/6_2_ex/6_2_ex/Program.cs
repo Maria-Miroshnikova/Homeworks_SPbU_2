@@ -8,9 +8,9 @@ namespace _6_2_ex
         {
             string fileName = "Map.txt";
 
-            var game = new Game();
+            var game = new Game(fileName, Console.SetCursorPosition);
         //     Console.WriteLine("THE GAME STARTED!\npress 'Escape' to exit");
-            game.Start(fileName);
+            game.Start();
         }
     }
 }

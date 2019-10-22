@@ -10,7 +10,7 @@ namespace _6_2_ex
         /// <summary>
         /// Inner class, which peresents game character;
         /// </summary>
-        private class GameCharacter
+        public class GameCharacter
         {
             /// <summary>
             /// The position of character on the game map;
@@ -26,24 +26,20 @@ namespace _6_2_ex
         /// <summary>
         /// Inner class, which presents game map;
         /// </summary>
-        private class GameMap
+        public class GameMap
         {
             public GameCharacter Character { get; }
             public char[,] Map { get; }
 
-            public GameMap(string fileName)
+            private MoveCursor moveCursor;
+
+            public GameMap(string fileName, MoveCursor moveCursor)
             {
+                this.moveCursor = moveCursor;
+
                 var listMap = FileExtraFunctions.ReadMapFromFile(fileName);
 
-                this.Map = new char[listMap.Count, listMap[0].Length];
-
-                for (int i = 0; i < listMap.Count; ++i)
-                {
-                    for (int j = 0; j < listMap[0].Length; ++j)
-                    {
-                        this.Map[i, j] = listMap[i][j];
-                    }
-                }
+                this.Map = FileExtraFunctions.MakeArrayFromList(listMap);
 
                 this.Character = new GameCharacter(FindCharacter());
             }
@@ -73,7 +69,7 @@ namespace _6_2_ex
             /// <summary>
             /// Replaces game character`s position on the map with given;
             /// </summary>
-            public void MoveCharacter(int dY, int dX)
+            public bool MoveCharacter(int dY, int dX)
             {
                 (int y, int x) newPosition = (Character.Position.y + dY, Character.Position.x + dX);
                 if (IsStepCorrect(newPosition.y, newPosition.x))
@@ -81,13 +77,15 @@ namespace _6_2_ex
                     Map[newPosition.y, newPosition.x] = '@';
                     Map[Character.Position.y, Character.Position.x] = ' ';
                     Character.Position = newPosition;
+                    return true;
                 }
+                return false;
             }
 
             /// <summary>
             /// Prints the game map on the console;
             /// </summary>
-            public void Draw()
+            public void DrawMap()
             {
                 Console.SetCursorPosition(0, 0);
 
@@ -106,15 +104,16 @@ namespace _6_2_ex
             /// </summary>
             public void DrawStep((int y, int x) oldPosition, (int y, int x) newPosition)
             {
-                if ((oldPosition.x == newPosition.x) && (oldPosition.y == newPosition.y))
+                if (moveCursor == null)
                 {
                     return;
                 }
-                Console.SetCursorPosition(oldPosition.x, oldPosition.y);
+
+                moveCursor(oldPosition.x, oldPosition.y);
                 Console.Write(Map[oldPosition.y, oldPosition.x]);
-                Console.SetCursorPosition(newPosition.x, newPosition.y);
+                moveCursor(newPosition.x, newPosition.y);
                 Console.Write(Map[newPosition.y, newPosition.x]);
-            }
+                }
         }
 
         /// <summary>
@@ -122,7 +121,7 @@ namespace _6_2_ex
         /// </summary>
         private class GameEventHandler
         {
-            public delegate void GameMovingEvent();
+            public delegate bool GameMovingEvent();
 
             public event GameMovingEvent LeftHandler;
             public event GameMovingEvent RightHandler;
@@ -144,7 +143,7 @@ namespace _6_2_ex
             {
                 while (true)
                 {
-                    var action = Console.ReadKey();
+                    var action = Console.ReadKey(true);
                     switch (action.Key)
                     {
                         case ConsoleKey.LeftArrow:
@@ -167,45 +166,58 @@ namespace _6_2_ex
             }
         }
 
-        private GameMap map;
+        public delegate void MoveCursor(int x, int y);
+
+        public GameMap Map { get; }
         private GameEventHandler eventObserver;
 
-        private void Move(int y, int x)
+        public Game(string fileName, MoveCursor moveCursor)
         {
-            (int y, int x) oldPosition = map.Character.Position;
-            map.MoveCharacter(y, x);
-            (int y, int x) newPosition = map.Character.Position;
-            map.DrawStep(oldPosition, newPosition);
+            Map = new GameMap(fileName, moveCursor);
+        }
+
+        private bool Move(int y, int x)
+        {
+            (int y, int x) oldPosition = Map.Character.Position;
+
+            if (!Map.MoveCharacter(y, x))
+            {
+                return false;
+            }
+
+            (int y, int x) newPosition = Map.Character.Position;
+            Map.DrawStep(oldPosition, newPosition);
+
+            return true;
         }
 
         /// <summary>
         /// Moves game character left;
         /// </summary>
-        public void OnLeft() => Move(0, -1);
+        public bool OnLeft() => Move(0, -1);
 
         /// <summary>
         /// Moves game characher right;
         /// </summary>
-        public void OnRight() => Move(0, 1);
+        public bool OnRight() => Move(0, 1);
 
         /// <summary>
         /// Moves game character up;
         /// </summary>
-        public void OnUp() => Move(-1, 0);
+        public bool OnUp() => Move(-1, 0);
 
         /// <summary>
         /// Moves game character down;
         /// </summary>
-        public void OnDown() => Move(1, 0);
+        public bool OnDown() => Move(1, 0);
 
         /// <summary>
-        /// Stars the game (creates map with character on it and runs the observing of pressing keys);
+        /// Stars the game (draw the map and runs the observing of pressing keys);
         /// </summary>
-        public void Start(string fileName)
+        public void Start()
         {
-            map = new GameMap(fileName);
             eventObserver = new GameEventHandler(OnLeft, OnRight, OnUp, OnDown);
-            map.Draw();
+            Map.DrawMap();
             eventObserver.Run();
         }
     }
