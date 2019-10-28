@@ -47,6 +47,7 @@
             this.buttonDelete = new System.Windows.Forms.Button();
             this.textBox = new System.Windows.Forms.TextBox();
             this.labelCurrentData = new System.Windows.Forms.Label();
+            this.buttonSign = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonNumber1
@@ -163,7 +164,7 @@
             // 
             // buttonEqualSign
             // 
-            this.buttonEqualSign.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.buttonEqualSign.BackColor = System.Drawing.Color.Orange;
             this.buttonEqualSign.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonEqualSign.Location = new System.Drawing.Point(174, 285);
             this.buttonEqualSign.Name = "buttonEqualSign";
@@ -224,9 +225,9 @@
             // buttonDelete
             // 
             this.buttonDelete.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.buttonDelete.Location = new System.Drawing.Point(255, 126);
+            this.buttonDelete.Location = new System.Drawing.Point(255, 181);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(36, 153);
+            this.buttonDelete.Size = new System.Drawing.Size(36, 98);
             this.buttonDelete.TabIndex = 16;
             this.buttonDelete.Text = "C";
             this.buttonDelete.UseVisualStyleBackColor = false;
@@ -249,12 +250,25 @@
             this.labelCurrentData.Size = new System.Drawing.Size(0, 13);
             this.labelCurrentData.TabIndex = 18;
             // 
+            // buttonSign
+            // 
+            this.buttonSign.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.buttonSign.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.buttonSign.Location = new System.Drawing.Point(255, 126);
+            this.buttonSign.Name = "buttonSign";
+            this.buttonSign.Size = new System.Drawing.Size(36, 47);
+            this.buttonSign.TabIndex = 19;
+            this.buttonSign.Text = "-/+";
+            this.buttonSign.UseVisualStyleBackColor = false;
+            this.buttonSign.Click += new System.EventHandler(this.buttonSign_Click);
+            // 
             // Calculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
             this.ClientSize = new System.Drawing.Size(384, 362);
+            this.Controls.Add(this.buttonSign);
             this.Controls.Add(this.labelCurrentData);
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.buttonDelete);
@@ -304,6 +318,7 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.TextBox textBox;
         private System.Windows.Forms.Label labelCurrentData;
+        private System.Windows.Forms.Button buttonSign;
     }
 }
 

@@ -19,6 +19,7 @@ namespace _7_1_ex
 
         public Calculator()
         {
+            stack = new Stack<float>();
             InitializeComponent();
         }
 
@@ -78,15 +79,19 @@ namespace _7_1_ex
             textBox.Text += ',';
         }
 
+        private void ZeroDivisionErrorMessage()
+        {
+            textBox.Text = "Error: division by zero";
+        }
+
         private void buttonOperationPlus_Click(object sender, EventArgs e)
         {
-            currentData = float.Parse(textBox.Text);
+            if (!float.TryParse(textBox.Text, out currentData))
+            {
+                return;
+            }
             textBox.Clear();
             labelCurrentData.Text = currentData.ToString() + "+";
-            if (!isPositive)
-            {
-                currentData = -currentData;
-            }
             stack.Push(currentData);
 
             isPositive = true;
@@ -95,46 +100,12 @@ namespace _7_1_ex
 
         private void buttonOperationMinus_Click(object sender, EventArgs e)
         {
-            if (operationNumber == 0)
+            if (!float.TryParse(textBox.Text, out currentData))
             {
-                if (isPositive)
-                {
-                    isPositive = false;
-                }
-                else
-                {
-                    /// нажали второй раз перед первым операндом
-                }
+                return;
             }
-
-            if (operationNumber == 2)
-            {
-                if (isPositive)
-                {
-                    isPositive = false;
-                }
-                else
-                {
-                    /// нажали перед вторым операндом второй раз
-                }
-            }
-
-            if (isPositive)
-            {
-                isPositive = false;
-            }
-            else
-            {
-                /// нажали второй раз перед вторым операндом
-            }
-
-            currentData = float.Parse(textBox.Text);
             textBox.Clear();
             labelCurrentData.Text = currentData.ToString() + "-";
-            if (!isPositive)
-            {
-                currentData = -currentData;
-            }
             stack.Push(currentData);
 
             isPositive = true;
@@ -143,13 +114,12 @@ namespace _7_1_ex
 
         private void buttonOperationMultiplication_Click(object sender, EventArgs e)
         {
-            currentData = float.Parse(textBox.Text);
+            if (!float.TryParse(textBox.Text, out currentData))
+            {
+                return;
+            }
             textBox.Clear();
             labelCurrentData.Text = currentData.ToString() + "*";
-            if (!isPositive)
-            {
-                currentData = -currentData;
-            }
             stack.Push(currentData);
 
             isPositive = true;
@@ -158,13 +128,12 @@ namespace _7_1_ex
 
         private void buttonOperationDivision_Click(object sender, EventArgs e)
         {
-            currentData = float.Parse(textBox.Text);
+            if (!float.TryParse(textBox.Text, out currentData))
+            {
+                return;
+            }
             textBox.Clear();
             labelCurrentData.Text = currentData.ToString() + "/";
-            if (!isPositive)
-            {
-                currentData = -currentData;
-            }
             stack.Push(currentData);
 
             isPositive = true;
@@ -202,25 +171,44 @@ namespace _7_1_ex
                 default:
                     break;
             }
-            
+
+            isPositive = currentData > 0;
             stack.Push(currentData);
         }
 
         private void buttonEqualSign_Click(object sender, EventArgs e)
         {
-            currentData = float.Parse(textBox.Text);
+            if ((!float.TryParse(textBox.Text, out currentData)) || (operationNumber == 0))
+            {
+                return;
+            }
             textBox.Clear();
             labelCurrentData.Text = "";
 
             stack.Push(currentData);
             
             calculate();
+            operationNumber = 0;
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
             textBox.Text = "";
             labelCurrentData.Text = "";
+        }
+
+        private void buttonSign_Click(object sender, EventArgs e)
+        {
+            if (isPositive)
+            {
+                textBox.Text = "-" + textBox.Text;
+            }
+            else
+            {
+                textBox.Text = textBox.Text.Replace("-", "");
+            }
+
+            isPositive = !isPositive;
         }
     }
 }
