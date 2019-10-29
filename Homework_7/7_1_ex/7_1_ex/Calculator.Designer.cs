@@ -58,7 +58,7 @@
             this.buttonNumber1.TabIndex = 0;
             this.buttonNumber1.Text = "1";
             this.buttonNumber1.UseVisualStyleBackColor = true;
-            this.buttonNumber1.Click += new System.EventHandler(this.buttonNumber1_Click);
+            this.buttonNumber1.Click += new System.EventHandler(this.buttonNumber_Click);
             // 
             // buttonNumber2
             // 
@@ -68,7 +68,7 @@
             this.buttonNumber2.TabIndex = 1;
             this.buttonNumber2.Text = "2";
             this.buttonNumber2.UseVisualStyleBackColor = true;
-            this.buttonNumber2.Click += new System.EventHandler(this.buttonNumber2_Click);
+            this.buttonNumber2.Click += new System.EventHandler(this.buttonNumber_Click);
             // 
             // buttonNumber3
             // 
@@ -78,7 +78,7 @@
             this.buttonNumber3.TabIndex = 2;
             this.buttonNumber3.Text = "3";
             this.buttonNumber3.UseVisualStyleBackColor = true;
-            this.buttonNumber3.Click += new System.EventHandler(this.buttonNumber3_Click);
+            this.buttonNumber3.Click += new System.EventHandler(this.buttonNumber_Click);
             // 
             // buttonNumber4
             // 
@@ -88,7 +88,7 @@
             this.buttonNumber4.TabIndex = 3;
             this.buttonNumber4.Text = "4";
             this.buttonNumber4.UseVisualStyleBackColor = true;
-            this.buttonNumber4.Click += new System.EventHandler(this.buttonNumber4_Click);
+            this.buttonNumber4.Click += new System.EventHandler(this.buttonNumber_Click);
             // 
             // buttonNumber5
             // 
@@ -98,7 +98,7 @@
             this.buttonNumber5.TabIndex = 4;
             this.buttonNumber5.Text = "5";
             this.buttonNumber5.UseVisualStyleBackColor = true;
-            this.buttonNumber5.Click += new System.EventHandler(this.buttonNumber5_Click);
+            this.buttonNumber5.Click += new System.EventHandler(this.buttonNumber_Click);
             // 
             // buttonNumber6
             // 
@@ -108,7 +108,7 @@
             this.buttonNumber6.TabIndex = 5;
             this.buttonNumber6.Text = "6";
             this.buttonNumber6.UseVisualStyleBackColor = true;
-            this.buttonNumber6.Click += new System.EventHandler(this.buttonNumber6_Click);
+            this.buttonNumber6.Click += new System.EventHandler(this.buttonNumber_Click);
             // 
             // buttonNumber7
             // 
@@ -118,7 +118,7 @@
             this.buttonNumber7.TabIndex = 6;
             this.buttonNumber7.Text = "7";
             this.buttonNumber7.UseVisualStyleBackColor = true;
-            this.buttonNumber7.Click += new System.EventHandler(this.buttonNumber7_Click);
+            this.buttonNumber7.Click += new System.EventHandler(this.buttonNumber_Click);
             // 
             // buttonNumber8
             // 
@@ -128,7 +128,7 @@
             this.buttonNumber8.TabIndex = 7;
             this.buttonNumber8.Text = "8";
             this.buttonNumber8.UseVisualStyleBackColor = true;
-            this.buttonNumber8.Click += new System.EventHandler(this.buttonNumber8_Click);
+            this.buttonNumber8.Click += new System.EventHandler(this.buttonNumber_Click);
             // 
             // buttonNumber9
             // 
@@ -138,7 +138,7 @@
             this.buttonNumber9.TabIndex = 8;
             this.buttonNumber9.Text = "9";
             this.buttonNumber9.UseVisualStyleBackColor = true;
-            this.buttonNumber9.Click += new System.EventHandler(this.buttonNumber9_Click);
+            this.buttonNumber9.Click += new System.EventHandler(this.buttonNumber_Click);
             // 
             // buttonDot
             // 
@@ -160,7 +160,7 @@
             this.buttonNumber0.TabIndex = 10;
             this.buttonNumber0.Text = "0";
             this.buttonNumber0.UseVisualStyleBackColor = true;
-            this.buttonNumber0.Click += new System.EventHandler(this.buttonNumber0_Click);
+            this.buttonNumber0.Click += new System.EventHandler(this.buttonNumber_Click);
             // 
             // buttonEqualSign
             // 
@@ -184,7 +184,7 @@
             this.buttonOperationPlus.TabIndex = 12;
             this.buttonOperationPlus.Text = "+";
             this.buttonOperationPlus.UseVisualStyleBackColor = false;
-            this.buttonOperationPlus.Click += new System.EventHandler(this.buttonOperationPlus_Click);
+            this.buttonOperationPlus.Click += new System.EventHandler(this.buttonOperation_Click);
             // 
             // buttonOperationMinus
             // 
@@ -196,7 +196,7 @@
             this.buttonOperationMinus.TabIndex = 13;
             this.buttonOperationMinus.Text = "-";
             this.buttonOperationMinus.UseVisualStyleBackColor = false;
-            this.buttonOperationMinus.Click += new System.EventHandler(this.buttonOperationMinus_Click);
+            this.buttonOperationMinus.Click += new System.EventHandler(this.buttonOperation_Click);
             // 
             // buttonOperationMultiplication
             // 
@@ -208,7 +208,7 @@
             this.buttonOperationMultiplication.TabIndex = 14;
             this.buttonOperationMultiplication.Text = "*";
             this.buttonOperationMultiplication.UseVisualStyleBackColor = false;
-            this.buttonOperationMultiplication.Click += new System.EventHandler(this.buttonOperationMultiplication_Click);
+            this.buttonOperationMultiplication.Click += new System.EventHandler(this.buttonOperation_Click);
             // 
             // buttonOperationDivision
             // 
@@ -220,7 +220,7 @@
             this.buttonOperationDivision.TabIndex = 15;
             this.buttonOperationDivision.Text = "/";
             this.buttonOperationDivision.UseVisualStyleBackColor = false;
-            this.buttonOperationDivision.Click += new System.EventHandler(this.buttonOperationDivision_Click);
+            this.buttonOperationDivision.Click += new System.EventHandler(this.buttonOperation_Click);
             // 
             // buttonDelete
             // 

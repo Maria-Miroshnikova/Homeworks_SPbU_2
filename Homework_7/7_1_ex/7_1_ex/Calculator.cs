@@ -1,214 +1,221 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace _7_1_ex
 {
+    public enum Operation { PLUS, MINUS, MULTIPLICATION, DIVISION };
+    public enum Sign { POSITIVE, NEGATIVE, ZERO};
+
     public partial class Calculator : Form
     {
-        private Stack<float> stack;
-        private float currentData;
-        private bool isPositive = true;
-        private int operationNumber;
+        private Operation operation;
+        private bool gotFirstOperand = false;
+        private bool isError = false;
+        private Calculation calculation;
 
         public Calculator()
         {
-            stack = new Stack<float>();
+            calculation = new Calculation();
             InitializeComponent();
         }
 
-        private void buttonNumber1_Click(object sender, EventArgs e)
+        private void ErrorCase()
         {
-            textBox.Text += 1;
+            textBox.Text = "";
+            labelCurrentData.Text = "";
+            gotFirstOperand = false;
+            isError = false;
+        }
+
+        private void buttonNumber_Click(object sender, EventArgs e)
+        {
+            if (isError)
+            {
+                ErrorCase();
+                return;
+            }
+
+            textBox.Text += ((Button)sender).Text;
             
-        }
-
-        private void buttonNumber2_Click(object sender, EventArgs e)
-        {
-            textBox.Text += 2;
-        }
-
-        private void buttonNumber3_Click(object sender, EventArgs e)
-        {
-            textBox.Text += 3;
-        }
-
-        private void buttonNumber4_Click(object sender, EventArgs e)
-        {
-            textBox.Text += 4;
-        }
-
-        private void buttonNumber5_Click(object sender, EventArgs e)
-        {
-            textBox.Text += 5;
-        }
-
-        private void buttonNumber6_Click(object sender, EventArgs e)
-        {
-            textBox.Text += 6;
-        }
-
-        private void buttonNumber7_Click(object sender, EventArgs e)
-        {
-            textBox.Text += 7;
-        }
-
-        private void buttonNumber8_Click(object sender, EventArgs e)
-        {
-            textBox.Text += 8;
-        }
-
-        private void buttonNumber9_Click(object sender, EventArgs e)
-        {
-            textBox.Text += 9;
-        }
-
-        private void buttonNumber0_Click(object sender, EventArgs e)
-        {
-            textBox.Text += 0;
         }
 
         private void buttonDot_Click(object sender, EventArgs e)
         {
+            if (isError)
+            {
+                ErrorCase();
+                return;
+            }
+
+            if (textBox.Text.Contains(","))
+            {
+                return;
+            }
             textBox.Text += ',';
         }
 
-        private void ZeroDivisionErrorMessage()
+        public void ZeroDivisionErrorMessage()
         {
             textBox.Text = "Error: division by zero";
         }
 
-        private void buttonOperationPlus_Click(object sender, EventArgs e)
+        private Operation OperationType(object sender)
         {
-            if (!float.TryParse(textBox.Text, out currentData))
+            string operationText = ((Button)sender).Text;
+            if (operationText == "+")
+            {
+                return Operation.PLUS;
+            }
+            else if (operationText == "-")
+            {
+                return Operation.MINUS;
+            }
+            else if (operationText == "*")
+            {
+                return Operation.MULTIPLICATION;
+            }
+            else if (operationText == "/")
+            {
+                return Operation.DIVISION;
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        private void buttonOperation_Click(object sender, EventArgs e)
+        {
+            if (isError)
+            {
+                ErrorCase();
+                return;
+            }
+
+            if (!float.TryParse(textBox.Text, out float currentData))
             {
                 return;
             }
             textBox.Clear();
-            labelCurrentData.Text = currentData.ToString() + "+";
-            stack.Push(currentData);
 
-            isPositive = true;
-            operationNumber = 1;
-        }
-
-        private void buttonOperationMinus_Click(object sender, EventArgs e)
-        {
-            if (!float.TryParse(textBox.Text, out currentData))
+            labelCurrentData.Text += $"{currentData} {((Button)sender).Text} ";
+            if (!gotFirstOperand)
             {
+                gotFirstOperand = true;
+                operation = OperationType(sender);
+                calculation.PushStack(currentData);
                 return;
             }
-            textBox.Clear();
-            labelCurrentData.Text = currentData.ToString() + "-";
-            stack.Push(currentData);
 
-            isPositive = true;
-            operationNumber = 2;
-        }
+            calculation.PushStack(currentData);  // приняли введенное до операции число число
 
-        private void buttonOperationMultiplication_Click(object sender, EventArgs e)
-        {
-            if (!float.TryParse(textBox.Text, out currentData))
+            if (gotFirstOperand)
             {
-                return;
+                if (!calculation.Calculate(ref currentData, operation))
+                {
+                    isError = true;
+                    ZeroDivisionErrorMessage();
+                    return;
+                }
+                operation = OperationType(sender);
             }
-            textBox.Clear();
-            labelCurrentData.Text = currentData.ToString() + "*";
-            stack.Push(currentData);
-
-            isPositive = true;
-            operationNumber = 3;
         }
 
-        private void buttonOperationDivision_Click(object sender, EventArgs e)
+        private Sign CheckSign(float data)
         {
-            if (!float.TryParse(textBox.Text, out currentData))
+            if (data > 0)
             {
-                return;
+                return Sign.POSITIVE;
             }
-            textBox.Clear();
-            labelCurrentData.Text = currentData.ToString() + "/";
-            stack.Push(currentData);
-
-            isPositive = true;
-            operationNumber = 4;
-        }
-
-        private void calculate()
-        {
-            float secondOperand = stack.Pop();
-            float firstOperand = stack.Pop();
-
-            switch(operationNumber)
+            else if (data < 0)
             {
-                case 1:
-                    currentData = firstOperand + secondOperand;
-                    textBox.Text = currentData.ToString();
-                    break;
-                case 2:
-                    currentData = firstOperand - secondOperand;
-                    textBox.Text = currentData.ToString();
-                    break;
-                case 3:
-                    currentData = firstOperand * secondOperand;
-                    textBox.Text = currentData.ToString();
-                    break;
-                case 4:
-                    if (secondOperand == 0)
-                    {
-                        throw new DivideByZeroException();
-                    }
-                    currentData = firstOperand / secondOperand;
-                    textBox.Text = currentData.ToString();
-                    break;
-
-                default:
-                    break;
+                return Sign.NEGATIVE;
             }
-
-            isPositive = currentData > 0;
-            stack.Push(currentData);
+            else
+            {
+                return Sign.ZERO;
+            }
         }
-
+        
         private void buttonEqualSign_Click(object sender, EventArgs e)
         {
-            if ((!float.TryParse(textBox.Text, out currentData)) || (operationNumber == 0))
+            if (isError)
+            {
+                ErrorCase();
+                return;
+            }
+
+            if ((!float.TryParse(textBox.Text, out float currentData)))
             {
                 return;
             }
-            textBox.Clear();
             labelCurrentData.Text = "";
 
-            stack.Push(currentData);
-            
-            calculate();
-            operationNumber = 0;
+            calculation.PushStack(currentData);
+
+            if (!gotFirstOperand)
+            {
+                return;
+            }
+
+            if (!calculation.Calculate(ref currentData, operation))
+            {
+                isError = true;
+                ZeroDivisionErrorMessage();
+                return;
+            }
+
+            textBox.Text = Convert.ToString(currentData);
+            gotFirstOperand = false;
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
+            if (isError)
+            {
+                ErrorCase();
+                return;
+            }
+
             textBox.Text = "";
             labelCurrentData.Text = "";
+            gotFirstOperand = false;
+            isError = false;
         }
 
         private void buttonSign_Click(object sender, EventArgs e)
         {
-            if (isPositive)
+            if (isError)
             {
-                textBox.Text = "-" + textBox.Text;
-            }
-            else
-            {
-                textBox.Text = textBox.Text.Replace("-", "");
+                ErrorCase();
+                return;
             }
 
-            isPositive = !isPositive;
+            float data;
+            if ((!float.TryParse(textBox.Text, out data)))
+            {
+                textBox.Text.Replace("-", "");
+                return;
+            }
+
+            switch (CheckSign(data))
+            {
+                case Sign.POSITIVE:
+                    textBox.Text = "-" + textBox.Text;
+                    break;
+
+                case Sign.NEGATIVE:
+                    textBox.Text = textBox.Text.Replace("-", "");
+                    break;
+
+                case Sign.ZERO:
+                    break;
+
+                default:
+                    System.Diagnostics.Debug.Assert(false);
+                    break;
+
+            }
         }
     }
 }
