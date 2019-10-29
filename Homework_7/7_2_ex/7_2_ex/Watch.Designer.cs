@@ -40,7 +40,7 @@
             // 
             // WatchTimer
             // 
-            this.WatchTimer.Interval = 1;
+            this.WatchTimer.Interval = 1000;
             this.WatchTimer.Tick += new System.EventHandler(this.WatchTimer_Tick);
             // 
             // LabelHours2
