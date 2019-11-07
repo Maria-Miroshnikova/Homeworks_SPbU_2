@@ -1,0 +1,8 @@
+image: Visual Studio 2017
+
+before_build:
+  - nuget restore Homework_7/7_1_ex/7_1_ex.sln
+build:
+  project: Homework_7/7_1_ex/7_1_ex.sln
+test_script:
+  - dotnet test Homework_7/7_1_ex/7_1_ex.sln
