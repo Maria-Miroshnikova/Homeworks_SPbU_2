@@ -1,0 +1,13 @@
+This is a list of numbers (with index, which starts from 1).
+
+The commands are:
+ 0 - exit
+ 1 - add element to position
+ 2 - delete element from position
+ 3 - output size of list
+ 4 - check if the list is empty
+ 5 - output element from position
+ 6 - change element from position
+ 7 - output all numbers
+ 8 - clear the list
+ HELP - output list of commands
